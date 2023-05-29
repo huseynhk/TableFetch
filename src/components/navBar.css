@@ -20,7 +20,7 @@ body {
 }
 
 .navbar-light {
-  background-color: #333;
+  background-color: #222;
   color: #fff;
 }
 
@@ -134,7 +134,7 @@ input:checked + .slider:before {
 
 .toggle-icon {
   color: #2196f3;
-  margin-top: 22px;
+  margin-top: 21px;
   font-size: 130%;
 }
 .toggle-icon.active {

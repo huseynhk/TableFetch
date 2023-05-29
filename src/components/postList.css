@@ -85,20 +85,51 @@
 .tableDiv{
   width: 100%;
   position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+
 }
+.table {
+  border-collapse: collapse;
+
+}
+.table th,
+.table td {
+  border: none;
+}
+
+.table th:first-child,
+.table td:first-child {
+  border-left: none;
+}
+
+
+.table td:last-child {
+  border-right: none;
+}
+
+.table tr:first-child th,
+.table tr:first-child td {
+  border-top: none;
+}
+
+.table tr:last-child ,
+.table tr:last-child td {
+  border-bottom: none;
+}
+
 
 #table {
-  width: 55%;
+  width: 100%;
   border-collapse: collapse;
-  margin:20px;
-  height: 300px;
-
+  height: 439px;
 }
+
 
 /* Table Styles */
 .table th,
 .table td {
-  padding: 8px;
+  padding: 10px;
   text-align: center;
   border-bottom: 3px solid #ccc;
   border-left: 3px solid #ccc;
@@ -109,7 +140,7 @@
 /* Dark Mode Styles */
 .table-dark th,
 .table-dark td {
-  background-color: #333;
+  background-color: #222;
   color: #c0bfbf;
   border-bottom: 3px solid #555;
   border-left: 3px solid #555;
@@ -118,14 +149,15 @@
 
 
 
+
 /* input */
 .input {
   background-color: #333;
   border-radius: 6px;
-  height: 40px;
-  width: 200px;
+  height: 50px;
+  width: 205px;
   border: none;
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .input-dark {
@@ -134,8 +166,8 @@
 
 .btn {
   display:flex;
-  height: 43px;
-  width: 205px;
+  height: 50px;
+  width: 208px;
   border-radius: 6px;
   justify-content: center;
   align-items: center;
@@ -143,6 +175,52 @@
   background-color: #0e95ef;
   color: #fff;
   border: none;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
+
+#mainArea{
+  display: flex;
+  justify-content: start;
+  width: 100%;
+}
+
+#leftSide{
+  width: 15%;
+  height: 70vh;
+  margin-right: 3%;
+  margin-top: 1.7%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+#leftSide h2 {
+  margin-right: 133px;
+}
+
+
+#rightSide{
+  width: 67%;
+}
+.exampleTitle{
+  margin-bottom:10px;
+  margin-left:3px;
+}
+
+#rightTop{
+  width: 50%;
+  margin-bottom:14px;
+  font-size: 12px;
+  font-weight: 600;
+}
+#checkBoxes{
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  justify-content: space-between;
+  border-radius: 5px;
+}
+
+#tableArea{
+  width: 100%;
+}

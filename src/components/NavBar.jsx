@@ -47,13 +47,13 @@ const NavBar = () => {
           <span className="slider round">
             <div
               className="parent"
-              style={{ backgroundColor: theme === "light" ? "#333" : "" }}
+              style={{ backgroundColor: theme === "light" ? "#222" : "" }}
             >
               <p
                 id="iconSun"
                 className={`toggle-icon ${theme === "dark" ? "active" : ""}`}
                 style={{
-                  backgroundColor: theme === "light" ? "#222" : "",
+                  backgroundColor: theme === "light" ? "#111" : "",
                   borderRadius: "6px",
                 }}
               >
@@ -75,7 +75,7 @@ const NavBar = () => {
               <p
                 id="iconMoon"
                 className={`toggle-icon ${theme === "light" ? "active" : ""}`}
-                style={{ backgroundColor: theme === "light" ? "#333" : "" }}
+                style={{ backgroundColor: theme === "light" ? "#222" : "" }}
               >
                 <p className="iconElement">
                   {" "}
