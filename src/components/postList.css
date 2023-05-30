@@ -121,17 +121,16 @@
 #table {
   width: 100%;
   border-collapse: collapse;
-  /* height: 439px; */
 }
 
 
 /* Table Styles */
 .table th,
 .table td {
-  padding: 10px;
+  padding: 1%;
   text-align: center;
-  border-bottom: 3px solid #ccc;
-  border-left: 3px solid #ccc;
+  border-bottom: 1% solid #ccc;
+  border-left: 1% solid #ccc;
   background-color: #fff;
   color: #555;
 }
@@ -147,22 +146,21 @@
 
 
 th {
-  font-size: 22px;
+  font-size: 150%;
 }
 .fth{
-  width: 60px;
+  width: 12%;
 }
 
 /* input */
 .input {
   background-color: #333;
   border-radius: 6px;
-  height: 30px;
-  width: 190px;
+  padding: 4%;
+  width: 85%;
   border: none;
-  font-size: 20px;
+  font-size: 120%;
   color: #fff;
-  padding: 10px;
 }
 .input::placeholder{
   color: #c3c3c3;
@@ -174,16 +172,17 @@ th {
 
 .btn {
   display:flex;
-  height: 50px;
-  width: 208px;
+  width: 92%;
+  padding: 3.5%;
   border-radius: 6px;
   justify-content: center;
   align-items: center;
-  font-size: 18px;
+  font-size: 120%;
   background-color: #0e95ef;
   color: #fff;
   border: none;
   margin-top: 15px;
+  display: inline-block;
 }
 
 .btn:hover{
@@ -196,36 +195,35 @@ th {
   display: flex;
   justify-content: start;
   width: 100%;
+  height: 100%;
 }
 
 #leftSide{
-  width: 15%;
-  height: 81.2vh;
+  width: 16%;
+  height: 81.5vh;
   margin-right: 2%;
   margin-left:1%;
   margin-top: 1.7%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  text-align: center;
   border-radius: 5px;
 }
 
 #leftSide h2 {
-  margin-right: 133px;
+  margin-right: 60%;
 }
 
 
 #rightSide{
-  width: 67%;
+  width: 68%;
 }
 .exampleTitle{
-  margin-bottom:10px;
-  margin-left:3px;
+  margin-bottom:1%;
+  margin-left:.5%;
 }
 
 #rightTop{
   width:53%;
-  margin-bottom:14px;
+  margin-bottom:1%;
   font-weight: 500;
 }
 #checkBoxes{
@@ -235,11 +233,140 @@ th {
 }
 
 #checkStyle{
-  padding: 8px;
+  padding: 1%;
   border-radius: 5px;
 }
 
 
-#tableArea{
-  width: 100%;
+
+@media screen  and (max-width:1400px){
+  #rightTop{
+    width:63%;
+  }
+  table{
+    font-size: 98%;
+   }
+}
+
+@media screen  and (max-width:1200px){
+  #rightTop{
+    width:70%;
+  }
+  table{
+    font-size:93%;
+   }
+}
+
+@media screen  and (max-width:1100px){
+  #rightTop{
+    width:77%;
+  }
+
+  table{
+    font-size:87%;
+   }
+  
+}
+
+@media only screen and (max-width: 1000px) {
+
+  #rightTop{
+    width:80%;
+  }
+  table{
+    font-size: 85%;
+   }
+}
+
+
+@media only screen and (max-width:950px) {
+
+  #rightTop{
+    width:92%;
+
+  }
+  #leftSide{
+    height: 83.8vh;
+  }
+ table{
+  font-size: 85%;
+ }
+
+}
+
+
+@media only screen and (max-width:830px) {
+
+  #rightTop{
+    width:99%;
+  }
+  #leftSide{
+    height: 83.5vh;
+  }
+ table{
+  font-size: 75%;
+ }
+ .btn{
+  padding: 2%;
+ }
+ #leftSide h2 {
+  margin-right: 55%;
+}
+}
+
+
+@media only screen and (max-width:790px) {
+  #mainArea{
+    flex-direction: column;
+  }
+  #leftSide{
+    width: 97%;
+    height: 32vh;
+    margin-top: 1.2%;
+  }
+  .input{
+    width: 70%;
+    padding: 3%;
+  }
+
+  .btn{
+    width: 76%;
+    padding: 2.8%;
+  }
+  #leftSide h2 {
+    margin-right: 65.5%;
+  }
+  
+ #rightSide{
+  width: 96%;
+  margin-left: 2%;
+ }
+}
+
+@media only screen and (max-width:520px) {
+
+  #leftSide{
+    width: 97%;
+    height: 30vh;
+    margin-top: 1%;
+  }
+
+  #leftSide h2 {
+    margin-right: 60%;
+  }
+  #rightTop{
+    width:99%;
+    margin-bottom:1%;
+    font-weight: 200;
+  }
+  
+ #rightSide{
+  width: 99%;
+  margin-left: 1%;
+  padding: .3%;
+ }
+ #checkStyle{
+  padding: .3%;
+
+}
 }
