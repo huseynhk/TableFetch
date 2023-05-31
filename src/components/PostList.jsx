@@ -91,7 +91,7 @@ const PostList = () => {
 
       const matchedUsers = data.filter((user) =>
         user.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+      ); // Daxil etdiyim adin API -da olub olmadigin yoxluyuram
 
       if (matchedUsers.length === 0) {
         Swal.fire({
@@ -103,14 +103,14 @@ const PostList = () => {
         return;
       }
 
-      // Filter out matched users that are already in the selectedUsers array
+      // AD movcuddursa 2 ci defe Table-a dusmesin
       const uniqueMatchedUsers = matchedUsers.filter(
         (user) =>
           !selectedUsers.find((selectedUser) => selectedUser.id === user.id)
+        // Gonderilen Ad tapilmiyibsa user-e beraber edib table-a add etsin
       );
 
       if (uniqueMatchedUsers.length === 0) {
-        // Display a different SweetAlert for duplicate names
         Swal.fire({
           icon: "warning",
           title: "Oops...",
@@ -120,14 +120,16 @@ const PostList = () => {
         return;
       }
 
+      // Yeni axtarıs neticelerinden dublikat adları arraydan silmek silmek
       const newSearchResults = [...searchResults, ...uniqueMatchedUsers];
-
-      // Remove duplicate names from the new search results
       const uniqueResults = newSearchResults.filter(
-        (user, index, self) =>
-          index === self.findIndex((u) => u.name === user.name)
-      );
-
+        (
+          user,
+          index,
+          self // self = newSearchResults // ozun index-ine beraber etmek
+        ) => index === self.findIndex((u) => u.name === user.name) // icindeki elemntin indexin-de beraber etmek
+      ); //index-i beraber ele selfe(newSearchResults) ve icindeki elementi gonderilen elemente beraber etsin
+      // yani movcuddursa table-de qalsin
       setSearchResults(uniqueResults);
       setSearchTerm("");
 
@@ -148,12 +150,15 @@ const PostList = () => {
   };
 
   useEffect(() => {
+    // true - dusa  data-ni set etsin eks halda fetch ile datani getirsin
     const storedUsers = localStorage.getItem("users");
     if (storedUsers) {
       setUsers(JSON.parse(storedUsers));
     } else {
       fetchUsers();
     }
+
+    // Localda Fetch-den gelen adlar varsa set etsin
     const storedSelectedUsers = localStorage.getItem("selectedUsers");
     if (storedSelectedUsers) {
       setSelectedUsers(JSON.parse(storedSelectedUsers));
@@ -195,14 +200,16 @@ const PostList = () => {
                   id="selectAllColumns"
                   type="checkbox"
                   className="promoted-input-checkbox"
-                  checked={selectAllColumns}
                   disabled={selectAllColumns}
+                  checked={selectAllColumns}
                   onChange={() => {
                     setSelectAllColumns(!selectAllColumns);
                     setColumnVisibility({
                       id: !selectAllColumns,
                       name: !selectAllColumns,
                       email: !selectAllColumns,
+                      username: !selectAllColumns,
+                      phone: !selectAllColumns,
                     });
                   }}
                 />
@@ -230,7 +237,6 @@ const PostList = () => {
                 </svg>
               </div>
             </div>
-
 
             <div id="checkStyle" className={`navbar-${theme}`}>
               <div className="checkbox-wrapper-28">
@@ -400,8 +406,6 @@ const PostList = () => {
                 </label>
               </div>
             </div>
-
-
           </div>
         </div>
 
@@ -422,20 +426,37 @@ const PostList = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {selectedUsers.map((user) => (
-                    <tr key={user.id}>
-                      {columnVisibility.id && <td>{user.id}</td>}
-                      {columnVisibility.name && <td>{user.name}</td>}
-                      {columnVisibility.email && <td>{user.email}</td>}
-                      {columnVisibility.username && <td>{user.username}</td>}
-                      {columnVisibility.phone && <td>{user.phone}</td>}
+                  {selectedUsers.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan={
+                          // Elementi Array-e ceviren method
+                          Object.keys(columnVisibility).filter(
+                            (key) => columnVisibility[key]
+                          ).length
+                        }
+                      >
+                        <p>No Users Selected</p>
+                      </td>
                     </tr>
-                  ))}
+                  ) : (
+                    selectedUsers.map((user) => (
+                      <tr key={user.id}>
+                        {columnVisibility.id && <td>{user.id}</td>}
+                        {columnVisibility.name && <td>{user.name}</td>}
+                        {columnVisibility.email && <td>{user.email}</td>}
+                        {columnVisibility.username && <td>{user.username}</td>}
+                        {columnVisibility.phone && <td>{user.phone}</td>}
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
           )}
         </div>
+
+
       </div>
     </div>
   );

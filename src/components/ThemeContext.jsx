@@ -9,7 +9,7 @@ const ThemeProvider = ({ children }) => {
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme); // setTheme ile set etdiyim ucun storedTheme-ya beraber olur
+    setTheme(newTheme); 
     localStorage.setItem('theme', newTheme);// set oaln theme-ni newTheme-a beraber edirem
   };
 
