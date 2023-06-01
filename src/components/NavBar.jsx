@@ -9,7 +9,7 @@ const NavBar = () => {
 
   const svgStyle = {
     marginRight: "5px",
-    marginLeft: "15px",
+    marginLeft: "12px",
   };
 
   return (
@@ -53,19 +53,19 @@ const NavBar = () => {
                 id="iconSun"
                 className={`toggle-icon ${theme === "dark" ? "active" : ""}`}
                 style={{
-                  backgroundColor: theme === "light" ? "#111" : "",
+                  backgroundColor: theme === "light" ? "#000" : "",
                   borderRadius: "6px",
                 }}
               >
                 <p
-                  style={{ color: theme === "light" ? "#444" : "" }}
+                  style={{ color: theme === "light" ? "#333" : "" }}
                   className="iconElement"
                 >
                   <FiSun />
                 </p>
                 <p
                   className="toggleText"
-                  style={{ color: theme === "light" ? "#444" : "" }}
+                  style={{ color: theme === "light" ? "#333" : "" }}
                 >
                   Light
                 </p>
@@ -85,6 +85,8 @@ const NavBar = () => {
           </span>
         </label>
       </div>
+
+      
     </div>
   );
 };

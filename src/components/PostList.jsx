@@ -168,7 +168,7 @@ const PostList = () => {
   return (
     <div id="mainArea">
       <div id="leftSide" className={`navbar-${theme}`}>
-        <h2>Sorgu</h2>
+        <h2>Sorğu</h2>
         <form onSubmit={handleSearch}>
           <input
             type="text"
@@ -186,11 +186,21 @@ const PostList = () => {
       </div>
 
       <div id="rightSide">
-        <h2 className="exampleTitle">
-          {selectedUsers.length > 0 && (
+        {selectedUsers.length > 0 ? (
+          <h2
+            style={{ color: theme === "light" ? "#fff" : "#606060" }}
+            className="exampleTitle"
+          >
             <span>{selectedUsers[selectedUsers.length - 1].name}</span>
-          )}
-        </h2>
+          </h2>
+        ) : (
+          <h2
+            style={{ color: theme === "light" ? "#fff" : "#606060" }}
+            className="exampleTitle"
+          >
+            Add Name
+          </h2>
+        )}
 
         <div id="rightTop">
           <div id="checkBoxes">
@@ -216,10 +226,7 @@ const PostList = () => {
                 <svg>
                   <use xlinkHref="#checkmark-28" />
                 </svg>
-                <label
-                  htmlFor="selectAllColumns"
-                  style={{ color: theme === "light" ? "#f9e5e5" : "#c0bfbf" }}
-                >
+                <label htmlFor="selectAllColumns" style={{ color: "#D4D9DF" }}>
                   All
                 </label>
                 <svg
@@ -257,7 +264,7 @@ const PostList = () => {
                 </svg>
                 <label
                   htmlFor="columnVisibility.id"
-                  style={{ color: theme === "light" ? "#f9e5e5" : "#c0bfbf" }}
+                  style={{ color: "#D4D9DF" }}
                 >
                   ID
                 </label>
@@ -296,7 +303,7 @@ const PostList = () => {
                 </svg>
                 <label
                   htmlFor="columnVisibility.name"
-                  style={{ color: theme === "light" ? "#f9e5e5" : "#c0bfbf" }}
+                  style={{ color: "#D4D9DF" }}
                 >
                   Name
                 </label>
@@ -335,7 +342,7 @@ const PostList = () => {
                 </svg>
                 <label
                   htmlFor="columnVisibility.email"
-                  style={{ color: theme === "light" ? "#f9e5e5" : "#c0bfbf" }}
+                  style={{ color: "#D4D9DF" }}
                 >
                   Email
                 </label>
@@ -374,7 +381,7 @@ const PostList = () => {
                 </svg>
                 <label
                   htmlFor="columnVisibility.username"
-                  style={{ color: theme === "light" ? "#f9e5e5" : "#c0bfbf" }}
+                  style={{ color: "#D4D9DF" }}
                 >
                   User
                 </label>
@@ -400,7 +407,7 @@ const PostList = () => {
                 </svg>
                 <label
                   htmlFor="columnVisibility.phone"
-                  style={{ color: theme === "light" ? "#f9e5e5" : "#c0bfbf" }}
+                  style={{ color: "#D4D9DF" }}
                 >
                   Phone
                 </label>
@@ -434,6 +441,7 @@ const PostList = () => {
                           Object.keys(columnVisibility).filter(
                             (key) => columnVisibility[key]
                           ).length
+                          // Uzunluguna gore yazini yeri itmeyecek
                         }
                       >
                         <p>No Users Selected</p>
@@ -455,8 +463,6 @@ const PostList = () => {
             </div>
           )}
         </div>
-
-
       </div>
     </div>
   );

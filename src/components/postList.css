@@ -36,7 +36,7 @@
   background-color: #e6e6e6;
 }
 .checkbox-wrapper-28 label {
-  color: #0080d3;
+  color: #4196E4;
   line-height: var(--size);
   cursor: pointer;
   position: relative;
@@ -47,13 +47,13 @@
   width: var(--size);
   margin-left: 9px;
   float: right;
-  border: 2px solid #0080d3;
+  border: 1.5px solid #4196E4;
   border-radius: 6px;
   transition: 0.15s all ease-out;
 }
 .checkbox-wrapper-28 svg {
-  stroke: #0080d3;
-  stroke-width: 3px;
+  stroke: #4196E4;
+  stroke-width: 2px;
   height: 0;
   width: calc(var(--size) * 0.6);
   position: absolute;
@@ -132,14 +132,14 @@
   border-bottom: 1% solid #ccc;
   border-left: 1% solid #ccc;
   background-color: #fff;
-  color: #555;
+  color: #606060;
 }
 
 /* Dark Mode Styles */
 .table-dark th,
 .table-dark td {
   background-color: #222;
-  color: #fcf1f1;
+  color: #fff;
   border-bottom: 3px solid #555;
   border-left: 3px solid #555;
 }
@@ -157,13 +157,13 @@ th {
   background-color: #333;
   border-radius: 6px;
   padding: 4%;
-  width: 85%;
+  width: 80%;
   border: none;
   font-size: 120%;
   color: #fff;
 }
 .input::placeholder{
-  color: #c3c3c3;
+  color: #BEBEBE;
 }
 .input-dark {
   background-color: #fff;
@@ -172,13 +172,13 @@ th {
 
 .btn {
   display:flex;
-  width: 92%;
+  width: 88.5%;
   padding: 3.5%;
   border-radius: 6px;
   justify-content: center;
   align-items: center;
   font-size: 120%;
-  background-color: #0e95ef;
+  background-color: #348FE2;
   color: #fff;
   border: none;
   margin-top: 15px;
@@ -187,7 +187,7 @@ th {
 
 .btn:hover{
   cursor: pointer;
-  background-color: #0185dd;
+  background-color: #2d7bc3;
   transition: .5s ease;
 }
 
@@ -209,7 +209,7 @@ th {
 }
 
 #leftSide h2 {
-  margin-right: 60%;
+  margin-right: 55%;
 }
 
 
@@ -217,8 +217,8 @@ th {
   width: 68%;
 }
 .exampleTitle{
-  margin-bottom:1%;
-  margin-left:.5%;
+  margin-bottom:.8%;
+  margin-left:.2%;
 }
 
 #rightTop{
@@ -236,8 +236,6 @@ th {
   padding: 1%;
   border-radius: 5px;
 }
-
-
 
 @media screen  and (max-width:1400px){
   #rightTop{
@@ -261,7 +259,9 @@ th {
   #rightTop{
     width:77%;
   }
-
+  #leftSide h2 {
+    margin-right: 45%;
+  }
   table{
     font-size:87%;
    }
@@ -272,6 +272,9 @@ th {
 
   #rightTop{
     width:80%;
+  }
+  #leftSide h2 {
+    margin-right: 45%;
   }
   table{
     font-size: 85%;
@@ -288,6 +291,7 @@ th {
   #leftSide{
     height: 83.8vh;
   }
+ 
  table{
   font-size: 85%;
  }
@@ -302,6 +306,9 @@ th {
   }
   #leftSide{
     height: 83.5vh;
+  }
+  #leftSide h2{
+   margin-left: 6%;
   }
  table{
   font-size: 75%;
@@ -334,7 +341,7 @@ th {
     padding: 2.8%;
   }
   #leftSide h2 {
-    margin-right: 65.5%;
+    margin-right:69%;
   }
   
  #rightSide{
@@ -352,7 +359,7 @@ th {
   }
 
   #leftSide h2 {
-    margin-right: 60%;
+    margin-right: 67%;
   }
   #rightTop{
     width:99%;
