@@ -165,6 +165,7 @@ const PostList = () => {
     }
   }, []);
 
+
   return (
     <div id="mainArea">
       <div id="leftSide" className={`navbar-${theme}`}>
@@ -454,7 +455,8 @@ const PostList = () => {
                         {columnVisibility.name && <td>{user.name}</td>}
                         {columnVisibility.email && <td>{user.email}</td>}
                         {columnVisibility.username && <td>{user.username}</td>}
-                        {columnVisibility.phone && <td>{user.phone}</td>}
+                        {/* {columnVisibility.phone && <td>{user.phone}</td>} */}
+                        {columnVisibility.phone && <td>{user.phone.slice(0, -6)}</td>}
                       </tr>
                     ))
                   )}
