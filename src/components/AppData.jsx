@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { ThemeContext } from "./ThemeContext";
+import Swal from "sweetalert2";
 import "./appData.css";
 
 function AppData() {
@@ -9,7 +10,6 @@ function AppData() {
   const [loading, setLoading] = useState(false);
   const [endpointsInput, setEndpointsInput] = useState("");
   const [endpoints, setEndpoints] = useState([]);
-
   const [selectAllColumns, setSelectAllColumns] = useState(true);
   const [columnVisibility, setColumnVisibility] = useState({
     "/posts": {
@@ -51,7 +51,6 @@ function AppData() {
       email: true,
       username: true,
       phone: true,
-      website: true,
     },
   });
   const [currentPage, setCurrentPage] = useState(1);
@@ -87,7 +86,16 @@ function AppData() {
 
   const handleButtonClick = () => {
     const trimmedInput = endpointsInput.trim();
-    const inputEndpoints = trimmedInput ? trimmedInput.split(" ") : [];
+
+    if (trimmedInput === "") {
+      Swal.fire({
+        title: "Empty Value",
+        text: "Please enter a value.",
+        icon: "error",
+      });
+      return;
+    }
+    const inputEndpoints = trimmedInput.split(" ");
 
     // Reset column visibility for newly selected API
     const updatedColumnVisibility = { ...columnVisibility };
@@ -106,6 +114,8 @@ function AppData() {
     setEndpoints(inputEndpoints);
     setColumnVisibility(updatedColumnVisibility);
     setCurrentPage(1); // Reset current page to 1
+
+    setEndpointsInput("");
   };
 
   useEffect(() => {
@@ -125,7 +135,7 @@ function AppData() {
       case "/todos":
         return ["userId", "id", "title"];
       case "/users":
-        return ["id", "name", "email", "username", "phone", "website"];
+        return ["id", "name", "email", "username", "phone"];
       default:
         return [];
     }
@@ -148,21 +158,32 @@ function AppData() {
 
     const pageButtons = [];
     for (let i = 1; i <= totalPages; i++) {
+      const isActive = currentPage === i;
+      const buttonStyle = {
+        color: isActive ? "#fff" : '',
+        background: isActive ? "#4196e4" : '',
+      };
       pageButtons.push(
         <button
           key={i}
           onClick={() => setCurrentPage(i)}
-          className={`pageButton ${currentPage === i ? "active" : ""}`}
+          className='pageButton'
+          style={isActive ? buttonStyle : null}
         >
           {i}
         </button>
       );
     }
-
+    
     return (
       <div id="mainArea">
         <div key={endpoint} id="rightSide">
-          <h2 className="exampleTitle">{endpoint}</h2>
+          <h2
+            className="exampleTitle"
+            style={{ color: theme === "light" ? "#fff" : "#606060" }}
+          >
+            {endpoint.substring(1)}
+          </h2>
 
           <div id="rightTop">
             <div id="checkBoxes">
@@ -275,6 +296,7 @@ function AppData() {
               className={`table ${theme === "light" ? "table-dark" : ""}`}
             >
               <thead>
+                
                 <tr>
                   {columns.map(
                     (column) =>
@@ -299,35 +321,33 @@ function AppData() {
                 ))}
               </tbody>
             </table>
-
-         
           </div>
 
           <div className="pagination">
-              <button
-                onClick={handlePrevPage}
-                disabled={currentPage === 1}
-                className="pagBtn"
-                style={{
-                  color: theme === "light" ? "#fff" : "#555",
-                  background: theme === "light" ? "#555" : "#fff",
-                }}
-              >
-                Prev
-              </button>
-             <span className="currentPage">{pageButtons}</span>   
-              <button
-                onClick={handleNextPage}
-                disabled={lastIndex >= endpointData.length}
-                className="pagBtn"
-                style={{
-                  color: theme === "light" ? "#fff" : "#555",
-                  background: theme === "light" ? "#555" : "#fff",
-                }}
-              >
-                Next
-              </button>
-            </div>
+            <button
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+              className="pagBtn"
+              style={{
+                color: theme === "light" ? "#fff" : "#555",
+                background: theme === "light" ? "#555" : "#fff",
+              }}
+            >
+              Prev
+            </button>
+            <span className="currentPage">{pageButtons}</span>
+            <button
+              onClick={handleNextPage}
+              disabled={lastIndex >= endpointData.length}
+              className="pagBtn"
+              style={{
+                color: theme === "light" ? "#fff" : "#555",
+                background: theme === "light" ? "#555" : "#fff",
+              }}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -336,7 +356,7 @@ function AppData() {
   return (
     <div id="mainArea">
       <div id="leftSide" className={`navbar-${theme}`}>
-        <h2>Sorgu</h2>
+        <h2 style={{ color: theme === "light" ? "#fff" : "#606060" }}>Sorgu</h2>
         <input
           type="text"
           value={endpointsInput}
@@ -349,9 +369,17 @@ function AppData() {
         </button>
       </div>
 
-      {loading && <p>Loading data...</p>}
+      {loading && (
+        <h2 style={{ color: theme === "light" ? "#fff" : "#606060" }}>
+          Loading data...
+        </h2>
+      )}
 
-      {!loading && endpoints.length === 0 && <p>No endpoints selected</p>}
+      {!loading && endpoints.length === 0 && (
+        <h2 style={{ color: theme === "light" ? "#fff" : "#606060" }}>
+          Data not found
+        </h2>
+      )}
 
       {!loading && endpoints.length > 0 && (
         <>
