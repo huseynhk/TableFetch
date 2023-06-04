@@ -168,7 +168,7 @@ const PostList = () => {
 
   return (
     <div id="mainArea">
-      <div id="leftSide" className={`navbar-${theme}`}>
+      <div id="leftSide" className={`navbar-${theme}`} >
         <h2>Sorğu</h2>
         <form onSubmit={handleSearch}>
           <input
@@ -185,6 +185,9 @@ const PostList = () => {
           </button>
         </form>
       </div>
+
+
+
 
       <div id="rightSide">
         {selectedUsers.length > 0 ? (
