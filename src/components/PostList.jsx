@@ -31,7 +31,7 @@ const PostList = () => {
     }
   };
 
-  // const handleSearch = (e) => {
+
   //   e.preventDefault();
   //   if (searchTerm.trim() === "") {
   //     Swal.fire({

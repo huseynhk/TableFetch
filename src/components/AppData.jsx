@@ -97,6 +97,18 @@ function AppData() {
     }
     const inputEndpoints = trimmedInput.split(" ");
 
+    // Check if any of the input endpoints are invalid
+    const invalidEndpoints = inputEndpoints.filter(endpoint => !getColumns(endpoint).length);
+
+    if (invalidEndpoints.length > 0) {
+      Swal.fire({
+        title: "Invalid API Name",
+        text: `The Invalid Name is: ${invalidEndpoints.join(", ")}`,
+        icon: "error",
+      });
+      return;
+    }
+
     // Reset column visibility for newly selected API
     const updatedColumnVisibility = { ...columnVisibility };
     inputEndpoints.forEach((endpoint) => {
@@ -114,7 +126,6 @@ function AppData() {
     setEndpoints(inputEndpoints);
     setColumnVisibility(updatedColumnVisibility);
     setCurrentPage(1); // Reset current page to 1
-
     setEndpointsInput("");
   };
 
@@ -160,21 +171,21 @@ function AppData() {
     for (let i = 1; i <= totalPages; i++) {
       const isActive = currentPage === i;
       const buttonStyle = {
-        color: isActive ? "#fff" : '',
-        background: isActive ? "#4196e4" : '',
+        color: isActive ? "#fff" : "",
+        background: isActive ? "#4196e4" : "",
       };
       pageButtons.push(
         <button
           key={i}
           onClick={() => setCurrentPage(i)}
-          className='pageButton'
+          className="pageButton"
           style={isActive ? buttonStyle : null}
         >
           {i}
         </button>
       );
     }
-    
+
     return (
       <div id="mainArea">
         <div key={endpoint} id="rightSide">
@@ -296,7 +307,6 @@ function AppData() {
               className={`table ${theme === "light" ? "table-dark" : ""}`}
             >
               <thead>
-                
                 <tr>
                   {columns.map(
                     (column) =>
@@ -348,8 +358,6 @@ function AppData() {
               Next
             </button>
           </div>
-
-          
         </div>
       </div>
     );
