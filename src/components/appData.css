@@ -256,6 +256,11 @@ th {
   border-radius: 20%;
   border: none;
   margin: 0% .2%;
+  cursor: pointer;
+}
+
+.pageButton:hover{
+  opacity: .9;
 }
 
 @media screen and (max-width: 1400px) {
