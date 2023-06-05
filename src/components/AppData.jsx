@@ -13,9 +13,9 @@ function AppData() {
     const storedEndpoints = localStorage.getItem("endpoints");
     return storedEndpoints ? JSON.parse(storedEndpoints) : [];
   });
-  const [selectAllColumns, setSelectAllColumns] = useState(true);
+  const [selectAllColumns] = useState(true);
   const [columnVisibility, setColumnVisibility] = useState(() => {
-    const storedColumnVisibility = localStorage.getItem("columnVisibility");
+  const storedColumnVisibility = localStorage.getItem("columnVisibility");
     return storedColumnVisibility
       ? JSON.parse(storedColumnVisibility)
       : {
@@ -61,8 +61,9 @@ function AppData() {
           },
         };
   });
+
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 50;
+  const rowsPerPage = 100;
 
   useEffect(() => {
     localStorage.setItem("endpoints", JSON.stringify(endpoints));
@@ -82,19 +83,21 @@ function AppData() {
         const json = await response.json();
         return { endpoint, data: json };
       });
-
+  
+      // ferqli api=lerden gelen data-lari toplamaq ucun
       const results = await Promise.all(requests);
       const dataObj = results.reduce((acc, { endpoint, data }) => {
         acc[endpoint] = data;
         return acc;
       }, {});
-
+      // reduce ile gelen data-lari daxil olan deyere gore cagiririq
       setData(dataObj);
       setLoading(false);
     };
 
     fetchData();
   }, [endpoints]);
+
 
   const handleInputChange = (event) => {
     setEndpointsInput(event.target.value);
@@ -103,7 +106,6 @@ function AppData() {
   const handleButtonClick = (event) => {
     event.preventDefault();
     const trimmedInput = endpointsInput.trim();
-
     if (trimmedInput === "") {
       Swal.fire({
         title: "Empty Value",
@@ -112,11 +114,10 @@ function AppData() {
       });
       return;
     }
-    const inputEndpoints = trimmedInput.split(" ");
+    // setEndpointsInput("");
 
-    // Check if any of the input endpoints are invalid
+    const inputEndpoints = trimmedInput.split(" "); // split daxil olan deyerleri arraya cevirir
     const invalidEndpoints = inputEndpoints.filter(endpoint => !getColumns(endpoint).length);
-
     if (invalidEndpoints.length > 0) {
       Swal.fire({
         title: "Invalid API Name",
@@ -126,10 +127,11 @@ function AppData() {
       return;
     }
 
-    // Reset column visibility for newly selected API
+    // Teze Api-ye gore table-ni reset etmek
     const updatedColumnVisibility = { ...columnVisibility };
     inputEndpoints.forEach((endpoint) => {
       if (!updatedColumnVisibility.hasOwnProperty(endpoint)) {
+        // columnVisibility - nin her hansi bir deyeri yoxdursa daxil olan Api-e gore column-un alsin
         updatedColumnVisibility[endpoint] = getColumns(endpoint).reduce(
           (obj, column) => {
             obj[column] = true;
@@ -139,15 +141,14 @@ function AppData() {
         );
       }
     });
-
-    setEndpoints(inputEndpoints);
+    setEndpoints(inputEndpoints);//daxil etdiyim deyeri setEndpoints elesin
     setColumnVisibility(updatedColumnVisibility);
     setCurrentPage(1); // Reset current page to 1
     setEndpointsInput("");
   };
 
   useEffect(() => {
-    setCurrentPage(1); // Reset current page to 1 whenever endpointsInput changes
+    setCurrentPage(1); // Her Yeni Api-ye kecende Pagination 1 den basdasin 
   }, [endpointsInput]);
 
   const getColumns = (endpoint) => {
@@ -174,7 +175,7 @@ function AppData() {
   };
 
   const handleNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+    setCurrentPage((nextPage) => nextPage + 1);
   };
 
   const renderTable = (endpoint, columns) => {
@@ -223,14 +224,17 @@ function AppData() {
                     className="promoted-input-checkbox"
                     disabled={!selectAllColumns}
                     checked={
-                      selectAllColumns &&
-                      Object.values(columnVisibility[endpoint]).some(
+                      selectAllColumns && // Elementi Array-e ceviren method
+                      // columnVisibility  endpoint-e uygun gelen deyerlerini array-a ceviririk
+                      Object.values(columnVisibility[endpoint]).some( // filter
                         (value) => value
                       )
                     }
                     onChange={() => {
                       setColumnVisibility((prevState) => {
                         const updatedVisibility = { ...prevState[endpoint] };
+                        // endpoint-in copy eliyib array-a ceviririk
+                        // sonra loopa-a salib selectAllColumns-a beraber edirik neticede butun check-lere tesir edirik
                         Object.keys(updatedVisibility).forEach((key) => {
                           updatedVisibility[key] = selectAllColumns;
                         });
@@ -238,6 +242,7 @@ function AppData() {
                         return {
                           ...prevState,
                           [endpoint]: updatedVisibility,
+                          //daxil olan Api-ye gore checkBox-lari set etmek
                         };
                       });
                     }}
@@ -327,7 +332,6 @@ function AppData() {
                 <tr>
                   {columns.map(
                     (column) =>
-                      // Check if the column should be visible for the endpoint
                       columnVisibility[endpoint][column] && (
                         <th key={column}>{column}</th>
                       )
@@ -383,7 +387,7 @@ function AppData() {
   return (
     <div id="mainArea">
       <div id="leftSide" className={`navbar-${theme}`}>
-        <h2 style={{ color: theme === "light" ? "#fff" : "#606060" }}>Sorgu</h2>
+        <h2 style={{ color: theme === "light" ? "#fff" : "#606060" }}>Sorğu</h2>
         <input
           type="text"
           value={endpointsInput}
