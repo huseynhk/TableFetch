@@ -9,52 +9,68 @@ function AppData() {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [endpointsInput, setEndpointsInput] = useState("");
-  const [endpoints, setEndpoints] = useState([]);
+  const [endpoints, setEndpoints] = useState(() => {
+    const storedEndpoints = localStorage.getItem("endpoints");
+    return storedEndpoints ? JSON.parse(storedEndpoints) : [];
+  });
   const [selectAllColumns, setSelectAllColumns] = useState(true);
-  const [columnVisibility, setColumnVisibility] = useState({
-    "/posts": {
-      id: true,
-      name: true,
-      email: true,
-      username: true,
-      phone: true,
-    },
-    "/comments": {
-      postId: true,
-      id: true,
-      name: true,
-      email: true,
-      body: true,
-    },
-    "/albums": {
-      userId: true,
-      id: true,
-      title: true,
-      completed: true,
-    },
-    "/photos": {
-      albumId: true,
-      id: true,
-      title: true,
-      url: true,
-      thumbnailUrl: true,
-    },
-    "/todos": {
-      userId: true,
-      id: true,
-      title: true,
-    },
-    "/users": {
-      userId: true,
-      id: true,
-      name: true,
-      email: true,
-      username: true,
-      phone: true,
-    },
+  const [columnVisibility, setColumnVisibility] = useState(() => {
+    const storedColumnVisibility = localStorage.getItem("columnVisibility");
+    return storedColumnVisibility
+      ? JSON.parse(storedColumnVisibility)
+      : {
+          "/posts": {
+            id: true,
+            name: true,
+            email: true,
+            username: true,
+            phone: true,
+          },
+          "/comments": {
+            postId: true,
+            id: true,
+            name: true,
+            email: true,
+            body: true,
+          },
+          "/albums": {
+            userId: true,
+            id: true,
+            title: true,
+            completed: true,
+          },
+          "/photos": {
+            albumId: true,
+            id: true,
+            title: true,
+            url: true,
+            thumbnailUrl: true,
+          },
+          "/todos": {
+            userId: true,
+            id: true,
+            title: true,
+          },
+          "/users": {
+            userId: true,
+            id: true,
+            name: true,
+            email: true,
+            username: true,
+            phone: true,
+          },
+        };
   });
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 50;
+
+  useEffect(() => {
+    localStorage.setItem("endpoints", JSON.stringify(endpoints));
+  }, [endpoints]);
+
+  useEffect(() => {
+    localStorage.setItem("columnVisibility", JSON.stringify(columnVisibility));
+  }, [columnVisibility]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,7 +100,8 @@ function AppData() {
     setEndpointsInput(event.target.value);
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClick = (event) => {
+    event.preventDefault();
     const trimmedInput = endpointsInput.trim();
 
     if (trimmedInput === "") {
