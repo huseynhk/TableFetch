@@ -14,8 +14,10 @@ function AppData() {
     return storedEndpoints ? JSON.parse(storedEndpoints) : [];
   });
   const [selectAllColumns] = useState(true);
+  const [selectAllChecked, setSelectAllChecked] = useState(false);
+
   const [columnVisibility, setColumnVisibility] = useState(() => {
-  const storedColumnVisibility = localStorage.getItem("columnVisibility");
+    const storedColumnVisibility = localStorage.getItem("columnVisibility");
     return storedColumnVisibility
       ? JSON.parse(storedColumnVisibility)
       : {
@@ -83,7 +85,7 @@ function AppData() {
         const json = await response.json();
         return { endpoint, data: json };
       });
-  
+
       // ferqli api=lerden gelen data-lari toplamaq ucun
       const results = await Promise.all(requests);
       const dataObj = results.reduce((acc, { endpoint, data }) => {
@@ -97,7 +99,6 @@ function AppData() {
 
     fetchData();
   }, [endpoints]);
-
 
   const handleInputChange = (event) => {
     setEndpointsInput(event.target.value);
@@ -117,7 +118,9 @@ function AppData() {
     // setEndpointsInput("");
 
     const inputEndpoints = trimmedInput.split(" "); // split daxil olan deyerleri arraya cevirir
-    const invalidEndpoints = inputEndpoints.filter(endpoint => !getColumns(endpoint).length);
+    const invalidEndpoints = inputEndpoints.filter(
+      (endpoint) => !getColumns(endpoint).length
+    );
     if (invalidEndpoints.length > 0) {
       Swal.fire({
         title: "Invalid API Name",
@@ -141,14 +144,14 @@ function AppData() {
         );
       }
     });
-    setEndpoints(inputEndpoints);//daxil etdiyim deyeri setEndpoints elesin
+    setEndpoints(inputEndpoints); //daxil etdiyim deyeri setEndpoints elesin
     setColumnVisibility(updatedColumnVisibility);
     setCurrentPage(1); // Reset current page to 1
     setEndpointsInput("");
   };
 
   useEffect(() => {
-    setCurrentPage(1); // Her Yeni Api-ye kecende Pagination 1 den basdasin 
+    setCurrentPage(1); // Her Yeni Api-ye kecende Pagination 1 den basdasin
   }, [endpointsInput]);
 
   const getColumns = (endpoint) => {
@@ -215,112 +218,105 @@ function AppData() {
           </h2>
 
           <div id="rightTop">
-            <div id="checkBoxes">
-              <div id="checkStyle" className={`navbar-${theme}`}>
-                <div className="checkbox-wrapper-28">
-                  <input
-                    id={`selectAllColumns.${endpoint}`}
-                    type="checkbox"
-                    className="promoted-input-checkbox"
-                    disabled={!selectAllColumns}
-                    checked={
-                      selectAllColumns && // Elementi Array-e ceviren method
-                      // columnVisibility  endpoint-e uygun gelen deyerlerini array-a ceviririk
-                      Object.values(columnVisibility[endpoint]).some( // filter
-                        (value) => value
-                      )
-                    }
-                    onChange={() => {
-                      setColumnVisibility((prevState) => {
-                        const updatedVisibility = { ...prevState[endpoint] };
-                        // endpoint-in copy eliyib array-a ceviririk
-                        // sonra loopa-a salib selectAllColumns-a beraber edirik neticede butun check-lere tesir edirik
-                        Object.keys(updatedVisibility).forEach((key) => {
-                          updatedVisibility[key] = selectAllColumns;
-                        });
+          <div id="checkBoxes">
+  <div id="checkStyle" className={`navbar-${theme}`}>
+    <div className="checkbox-wrapper-28">
+      <input
+        id={`selectAllColumns.${endpoint}`}
+        type="checkbox"
+        className="promoted-input-checkbox"
+        checked={
+          Object.values(columnVisibility[endpoint]).filter((value) => value)
+        }
+        onChange={() => {
+          setColumnVisibility((prevState) => {
+            const updatedVisibility = { ...prevState[endpoint] };
+            const allSelected = Object.values(updatedVisibility).every(
+              (value) => value
+            );
+            Object.keys(updatedVisibility).forEach((key, index) => {
+              if (index !== 0) {
+                updatedVisibility[key] = !allSelected;
+              }
+            });
+            return {
+              ...prevState,
+              [endpoint]: updatedVisibility,
+            };
+          });
+        }}
+      />
+      <svg>
+        <use xlinkHref="#checkmark-28" />
+      </svg>
+      <label
+        htmlFor={`selectAllColumns.${endpoint}`}
+        style={{ color: theme === "light" ? "#f9e5e5" : "#c0bfbf" }}
+      >
+        All
+      </label>
+      <svg xmlns="http://www.w3.org/2000/svg" style={{ display: "none" }}>
+        <symbol id="checkmark-28" viewBox="0 0 24 24">
+          <path
+            strokeLinecap="round"
+            strokeMiterlimit="10"
+            fill="none"
+            d="M22.9 3.7l-15.2 16.6-6.6-7.1"
+          ></path>
+        </symbol>
+      </svg>
+    </div>
+  </div>
 
-                        return {
-                          ...prevState,
-                          [endpoint]: updatedVisibility,
-                          //daxil olan Api-ye gore checkBox-lari set etmek
-                        };
-                      });
-                    }}
-                  />
-                  <svg>
-                    <use xlinkHref="#checkmark-28" />
-                  </svg>
-                  <label
-                    htmlFor={`selectAllColumns.${endpoint}`}
-                    style={{ color: theme === "light" ? "#f9e5e5" : "#c0bfbf" }}
-                  >
-                    All
-                  </label>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    style={{ display: "none" }}
-                  >
-                    <symbol id="checkmark-28" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeMiterlimit="10"
-                        fill="none"
-                        d="M22.9 3.7l-15.2 16.6-6.6-7.1"
-                      ></path>
-                    </symbol>
-                  </svg>
-                </div>
-              </div>
+  {columns.map((column, index) => (
+    <div
+      key={column}
+      id="checkStyle"
+      className={`navbar-${theme}`}
+      style={{ pointerEvents: index === 0 ? "none" : "auto" }}
+    >
+      <div className="checkbox-wrapper-28">
+        <input
+          id={`columnVisibility.${endpoint}.${column}`}
+          type="checkbox"
+          className="promoted-input-checkbox"
+          checked={columnVisibility[endpoint][column]}
+          onChange={() =>
+            setColumnVisibility((prevState) => {
+              const updatedVisibility = { ...prevState[endpoint] };
+              updatedVisibility[column] = !updatedVisibility[column];
+              return {
+                ...prevState,
+                [endpoint]: updatedVisibility,
+              };
+            })
+          }
+          disabled={index === 0}
+        />
+        <svg>
+          <use xlinkHref="#checkmark-28" />
+        </svg>
+        <label
+          htmlFor={`columnVisibility.${endpoint}.${column}`}
+          style={{ color: theme === "light" ? "#f9e5e5" : "#c0bfbf" }}
+        >
+          {column.charAt(0).toUpperCase() + column.slice(1)}
+        </label>
+        <svg xmlns="http://www.w3.org/2000/svg" style={{ display: "none" }}>
+          <symbol id="checkmark-28" viewBox="0 0 24 24">
+            <path
+              strokeLinecap="round"
+              strokeMiterlimit="10"
+              fill="none"
+              d="M22.9 3.7l-15.2 16.6-6.6-7.1"
+            ></path>
+          </symbol>
+        </svg>
+      </div>
+    </div>
+  ))}
+</div>
 
-              {columns.map((column) => (
-                <div key={column} id="checkStyle" className={`navbar-${theme}`}>
-                  <div className="checkbox-wrapper-28">
-                    <input
-                      id={`columnVisibility.${endpoint}.${column}`}
-                      type="checkbox"
-                      className="promoted-input-checkbox"
-                      checked={columnVisibility[endpoint][column]}
-                      onChange={() =>
-                        setColumnVisibility((prevState) => {
-                          const updatedVisibility = { ...prevState[endpoint] };
-                          updatedVisibility[column] =
-                            !updatedVisibility[column];
-
-                          return {
-                            ...prevState,
-                            [endpoint]: updatedVisibility,
-                          };
-                        })
-                      }
-                    />
-                    <svg>
-                      <use xlinkHref="#checkmark-28" />
-                    </svg>
-                    <label
-                      htmlFor={`columnVisibility.${endpoint}.${column}`}
-                      style={{
-                        color: theme === "light" ? "#f9e5e5" : "#c0bfbf",
-                      }}
-                    >
-                      {column.charAt(0).toUpperCase() + column.slice(1)}
-                    </label>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      style={{ display: "none" }}
-                    >
-                      <symbol id="checkmark-28" viewBox="0 0 24 24">
-                        <path
-                          strokeLinecap="round"
-                          strokeMiterlimit="10"
-                          fill="none"
-                          d="M22.9 3.7l-15.2 16.6-6.6-7.1"
-                        ></path>
-                      </symbol>
-                    </svg>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
 
           <div className="tableDiv">
@@ -379,6 +375,7 @@ function AppData() {
               Next
             </button>
           </div>
+
         </div>
       </div>
     );
