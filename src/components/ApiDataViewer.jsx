@@ -1,25 +1,36 @@
-import React, { useState ,useContext } from "react";
+import React, { useState, useContext } from "react";
 import Swal from "sweetalert2";
-import "./main.css";
+import "./apiDataViewer.css";
 import { ThemeContext } from "./ThemeContext";
 
 function ApiDataViewer() {
   const { theme } = useContext(ThemeContext);
   const [apiName, setApiName] = useState("");
   const [data, setData] = useState([]);
+  const [columnVisibility, setColumnVisibility] = useState({});
 
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        `https://jsonplaceholder.typicode.com/${apiName}`
-      );
+      const response = await fetch(`https://jsonplaceholder.typicode.com/${apiName}`);
       const jsonData = await response.json();
       setData(jsonData);
+      initializeColumnVisibility(jsonData, true); // Pass true to activate all checkboxes
     } catch (error) {
       console.error(error);
       setData([]);
+      setColumnVisibility({});
     }
   };
+  
+  const initializeColumnVisibility = (jsonData, activateAll) => {
+    const columns = Object.keys(jsonData[0] || {});
+    const initialVisibility = columns.reduce((acc, column) => {
+      acc[column] = activateAll ? true : false; // Set all checkboxes active if activateAll is true
+      return acc;
+    }, {});
+    setColumnVisibility(initialVisibility);
+  };
+  
 
   const renderTableCell = (value) => {
     if (typeof value === "object" && value !== null) {
@@ -35,34 +46,144 @@ function ApiDataViewer() {
           type="text"
           value={apiName}
           onChange={(e) => setApiName(e.target.value)}
-          placeholder="Enter API name"
+          placeholder="Input"
         />
         <button onClick={fetchData}>Fetch Data</button>
       </div>
 
       <div id="rightSide">
         {data.length > 0 && (
-          <div id="tableArea">
-            <table id='table' className={`table ${theme === "light" ? "table-dark" : ""}`}>
+          <div id="rightTop">
+            <div id="checkBoxes">
+              <div id="checkStyle" className={`navbar-${theme}`}>
+                <div className="checkbox-wrapper-28">
+                  <input
+                    id="selectAllColumns"
+                    type="checkbox"
+                    className="promoted-input-checkbox"
+                    checked={Object.values(columnVisibility).every(
+                      (value) => value
+                    )}
+                    onChange={() => {
+                      const allSelected = Object.values(columnVisibility).every(
+                        (value) => value
+                      );
+                      const updatedVisibility = Object.keys(
+                        columnVisibility
+                      ).reduce((acc, column, index) => {
+                        acc[column] =
+                          !allSelected || (index === 0 && allSelected); // Enable the first column if not all are selected or if all are selected
+                        return acc;
+                      }, {});
+                      setColumnVisibility(updatedVisibility);
+                    }}
+                  />
+
+                  <svg>
+                    <use xlinkHref="#checkmark-28" />
+                  </svg>
+                  <label
+                    htmlFor="selectAllColumns"
+                    style={{ color: theme === "light" ? "#f9e5e5" : "#c0bfbf" }}
+                  >
+                    All
+                  </label>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{ display: "none" }}
+                  >
+                    <symbol id="checkmark-28" viewBox="0 0 24 24">
+                      <path
+                        strokeLinecap="round"
+                        strokeMiterlimit="10"
+                        fill="none"
+                        d="M22.9 3.7l-15.2 16.6-6.6-7.1"
+                      ></path>
+                    </symbol>
+                  </svg>
+                </div>
+              </div>
+
+              {Object.keys(columnVisibility).map((column, index) => (
+                <div key={column} id="checkStyle" className={`navbar-${theme}`}>
+                  <div className="checkbox-wrapper-28">
+                    <input
+                      id={`columnVisibility.${column}`}
+                      type="checkbox"
+                      className="promoted-input-checkbox"
+                      checked={columnVisibility[column]}
+                      disabled={
+                        index === 0 &&
+                        Object.values(columnVisibility).every((value) => value)
+                      } // Disable the first checkbox only when all checkboxes are selected
+                      onChange={() =>
+                        setColumnVisibility((prevState) => ({
+                          ...prevState,
+                          [column]: !prevState[column],
+                        }))
+                      }
+                    />
+
+                    <svg>
+                      <use xlinkHref="#checkmark-28" />
+                    </svg>
+                    <label
+                      htmlFor={`columnVisibility.${column}`}
+                      style={{
+                        color: theme === "light" ? "#f9e5e5" : "#c0bfbf",
+                      }}
+                    >
+                      {column.charAt(0).toUpperCase() + column.slice(1)}
+                    </label>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      style={{ display: "none" }}
+                    >
+                      <symbol id="checkmark-28" viewBox="0 0 24 24">
+                        <path
+                          strokeLinecap="round"
+                          strokeMiterlimit="10"
+                          fill="none"
+                          d="M22.9 3.7l-15.2 16.6-6.6-7.1"
+                        ></path>
+                      </symbol>
+                    </svg>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div id="tableDiv">
+          {data.length > 0 && (
+            <table
+              id="table"
+              className={`table ${theme === "light" ? "table-dark" : ""}`}
+            >
               <thead>
                 <tr>
-                  {Object.keys(data[0]).map((key) => (
-                    <th key={key}>{key}</th>
-                  ))}
+                  {Object.keys(columnVisibility)
+                    .filter((column) => columnVisibility[column])
+                    .map((key) => (
+                      <th key={key}>{key}</th>
+                    ))}
                 </tr>
               </thead>
               <tbody>
                 {data.map((item, index) => (
                   <tr key={index}>
-                    {Object.values(item).map((value, i) => (
-                      <td key={i}>{renderTableCell(value)}</td>
-                    ))}
+                    {Object.entries(item)
+                      .filter(([column]) => columnVisibility[column])
+                      .map(([column, value], i) => (
+                        <td key={i}>{renderTableCell(value)}</td>
+                      ))}
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

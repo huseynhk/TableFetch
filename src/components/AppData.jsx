@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { ThemeContext } from "./ThemeContext";
 import Swal from "sweetalert2";
-import "./main.css";
+import "./AppData.css";
 
 function AppData() {
   const { theme } = useContext(ThemeContext);
