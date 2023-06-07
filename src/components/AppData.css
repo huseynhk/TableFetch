@@ -1,4 +1,4 @@
-/* CheckBox */
+/* CheckBox
 .checkBox input {
     height: 20px;
     width: 20px;
@@ -81,13 +81,13 @@
   
   /* Table */
   
-  .tableDiv {
+  /* .tableDiv {
     width: 100%;
     position: relative;
     border-radius: 6px;
     max-height: 60vh; /* Set the maximum height of the container */
-    overflow-y: auto;
-  }
+    /* overflow-y: auto; */
+  /* } */
   
   .tableDiv::-webkit-scrollbar {
     width: 10px;
@@ -394,5 +394,4 @@
     #checkStyle {
       padding: 0.2%;
     }
-  }
-  
+  } */

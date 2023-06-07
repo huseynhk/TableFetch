@@ -81,18 +81,25 @@
 
 /* Table */
 
-.tableDiv {
+#tableDiv {
   width: 100%;
   position: relative;
   border-radius: 6px;
-  height: 60vh; 
+  max-height: 70vh;
+  overflow: scroll;
 }
 
+#tableDiv::-webkit-scrollbar {
+  width: 0px;
+}
 
 .table {
   border-collapse: collapse;
-  font-size: 92%;
+  font-size: 105%;
 }
+  
+
+
 .table th,
 .table td {
   border: none;
@@ -126,6 +133,7 @@
 .table th,
 .table td {
   width: 10%;
+  padding: .8%;
   text-align: center;
   border-bottom: 3px solid #ccc;
   border-left: 3px solid #ccc;

@@ -4,7 +4,6 @@ import "./apiDataViewer.css";
 import { ThemeContext } from "./ThemeContext";
 import Pagination from "./Pagination";
 
-
 function ApiDataViewer() {
   const { theme } = useContext(ThemeContext);
   const [apiName, setApiName] = useState("");
@@ -42,17 +41,40 @@ function ApiDataViewer() {
     setColumnVisibility(initialVisibility);
   };
 
+  // const renderTableCell = (value) => {
+  //   const maxLength = 20; // Maximum length of displayed value
+  //   if (typeof value === "object" && value !== null) {
+  //     return JSON.stringify(value);
+  //   } else if (typeof value === "string" && value.length > maxLength) {
+  //     return value.substring(0, maxLength) + "...";
+  //   }
+  //   return value;
+  // };
   const renderTableCell = (value) => {
+    const maxLength = 16; // Maximum length of displayed value
+
     if (typeof value === "object" && value !== null) {
-      return JSON.stringify(value);
+      // If the value is an object, convert it to a JSON string
+      const jsonString = JSON.stringify(value);
+      if (jsonString.length > maxLength) {
+        // Truncate the JSON string if it exceeds the maximum length
+        return jsonString.substring(0, maxLength) + "...";
+      }
+      return jsonString;
+    } else if (typeof value === "string" && value.length > maxLength) {
+      // Truncate string values if they exceed the maximum length
+      return value.substring(0, maxLength) + "...";
     }
+
     return value;
   };
+
   const handleItemsPerPageChange = (e) => {
     const newItemsPerPage = parseInt(e.target.value, 10);
     setItemsPerPage(newItemsPerPage);
     setCurrentPage(1); // Reset to the first page
   };
+
   return (
     <div id="mainArea">
       <div id="leftSide">
@@ -170,7 +192,7 @@ function ApiDataViewer() {
           </div>
         )}
 
-        <div id="tableDiv">
+        <div id="tableDiv" >
           {data.length > 0 && (
             <table
               id="table"
@@ -187,36 +209,51 @@ function ApiDataViewer() {
               </thead>
 
               <tbody>
-                  {currentItems.map((item, index) => (
-                    <tr key={index}>
-                      {Object.entries(item)
-                        .filter(([column]) => columnVisibility[column])
-                        .map(([column, value], i) => (
-                          <td key={i}>{renderTableCell(value)}</td>
-                        ))}
-                    </tr>
-                  ))}
-                </tbody>
+                {currentItems.map((item, index) => (
+                  <tr key={index}>
+                    {Object.entries(item)
+                      .filter(([column]) => columnVisibility[column])
+                      .map(([column, value], i) => (
+                        <td key={i}>{renderTableCell(value)}</td>
+                      ))}
+                  </tr>
+                ))}
+              </tbody>
             </table>
           )}
-          <Pagination
-            itemsPerPage={itemsPerPage}
-            totalItems={data.length}
-            currentPage={currentPage}
-            onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
-          />
-
-          <select
-            id="itemsPerPage"
-            value={itemsPerPage}
-            onChange={handleItemsPerPageChange}
-          >
-            <option value={10}>10</option>
-            <option value={25}>25</option>
-            <option value={50}>50</option>
-            <option value={100}>100</option>
-          </select>
+   
         </div>
+
+     <div>
+             
+     {data.length === 0 && (
+            <div id="noDataMessage">
+              No data available. Please fetch data from an API.
+            </div>
+          )}
+
+          {data.length > 0 && (
+            <div>
+              <Pagination
+                itemsPerPage={itemsPerPage}
+                totalItems={data.length}
+                currentPage={currentPage}
+                onPageChange={setCurrentPage}
+              />
+              <select
+                id="itemsPerPage"
+                value={itemsPerPage}
+                onChange={handleItemsPerPageChange}
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>
+            </div>
+          )}
+     </div>
+
       </div>
     </div>
   );
