@@ -21,43 +21,67 @@ const Pagination = ({
     onPageChange(pageNumber);
   };
 
-  // Handle previous page click
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      onPageChange(currentPage - 1);
-    }
-  };
-
-  // Handle next page click
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      onPageChange(currentPage + 1);
-    }
-  };
-
   return (
     <div className="pagination">
-      <button
-        onClick={handlePreviousPage}
-        disabled={currentPage === 1}
-      >
-        Previous
-      </button>
-      {pageNumbers.map((number) => (
+      {currentPage > 1 && (
         <button
-          key={number}
-          onClick={() => handlePageClick(number)}
-          className={currentPage === number ? "active" : ""}
+          onClick={() => handlePageClick(currentPage - 1)}
+          className={`pagination-button ${currentPage === 1 ? "disabled" : ""}`}
+          disabled={currentPage === 1}
         >
-          {number}
+          Previous
         </button>
-      ))}
-      <button
-        onClick={handleNextPage}
-        disabled={currentPage === totalPages}
-      >
-        Next
-      </button>
+      )}
+      {pageNumbers.map((number) => {
+        if (currentPage > 5 && number === totalPages - 0) {
+          return (
+            <button
+              key={number}
+              onClick={() => handlePageClick(number)}
+              className={`pagination-button ${currentPage === number ? "active" : ""}`}
+            >
+              {number}
+            </button>
+          );
+        }
+        if (number === totalPages) {
+          return (
+            <button
+              key={number}
+              onClick={() => handlePageClick(number)}
+              className={`pagination-button ${currentPage === number ? "active" : ""}`}
+            >
+              {number}
+            </button>
+          );
+        }
+        if (number <= 5) {
+          return (
+            <button
+              key={number}
+              onClick={() => handlePageClick(number)}
+              className={`pagination-button ${currentPage === number ? "active" : ""}`}
+            >
+              {number}
+            </button>
+          );
+        }
+        if (number === 6 && totalPages > 6) {
+          return (
+            <span key="ellipsis">...</span>
+          );
+        }
+        return null; // Skip page numbers greater than 6
+      })}
+      {currentPage < totalPages && (
+        <button
+          onClick={() => handlePageClick(currentPage + 1)}
+          className={`pagination-button ${currentPage === totalPages ? "disabled" : ""}`}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      )}
     </div>
   );
 };

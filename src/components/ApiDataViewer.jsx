@@ -4,13 +4,14 @@ import "./apiDataViewer.css";
 import { ThemeContext } from "./ThemeContext";
 import Pagination from "./Pagination";
 
+
 function ApiDataViewer() {
   const { theme } = useContext(ThemeContext);
   const [apiName, setApiName] = useState("");
   const [data, setData] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [currentPage, setCurrentPage] = useState(1); // Current page
-  const [itemsPerPage, setItemsPerPage] = useState(50); // Number of items per page
+  const [itemsPerPage, setItemsPerPage] = useState(10); // Number of items per page
 
   // Calculate the indexes of the first and last items of the current page
   const indexOfLastItem = currentPage * itemsPerPage;
