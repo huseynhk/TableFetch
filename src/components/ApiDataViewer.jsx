@@ -2,16 +2,26 @@ import React, { useState, useContext } from "react";
 import Swal from "sweetalert2";
 import "./apiDataViewer.css";
 import { ThemeContext } from "./ThemeContext";
+import Pagination from "./Pagination";
 
 function ApiDataViewer() {
   const { theme } = useContext(ThemeContext);
   const [apiName, setApiName] = useState("");
   const [data, setData] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
+  const [currentPage, setCurrentPage] = useState(1); // Current page
+  const [itemsPerPage, setItemsPerPage] = useState(50); // Number of items per page
+
+  // Calculate the indexes of the first and last items of the current page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
   const fetchData = async () => {
     try {
-      const response = await fetch(`https://jsonplaceholder.typicode.com/${apiName}`);
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/${apiName}`
+      );
       const jsonData = await response.json();
       setData(jsonData);
       initializeColumnVisibility(jsonData, true); // Pass true to activate all checkboxes
@@ -21,7 +31,7 @@ function ApiDataViewer() {
       setColumnVisibility({});
     }
   };
-  
+
   const initializeColumnVisibility = (jsonData, activateAll) => {
     const columns = Object.keys(jsonData[0] || {});
     const initialVisibility = columns.reduce((acc, column) => {
@@ -30,7 +40,6 @@ function ApiDataViewer() {
     }, {});
     setColumnVisibility(initialVisibility);
   };
-  
 
   const renderTableCell = (value) => {
     if (typeof value === "object" && value !== null) {
@@ -38,7 +47,11 @@ function ApiDataViewer() {
     }
     return value;
   };
-
+  const handleItemsPerPageChange = (e) => {
+    const newItemsPerPage = parseInt(e.target.value, 10);
+    setItemsPerPage(newItemsPerPage);
+    setCurrentPage(1); // Reset to the first page
+  };
   return (
     <div id="mainArea">
       <div id="leftSide">
@@ -61,7 +74,8 @@ function ApiDataViewer() {
                     id="selectAllColumns"
                     type="checkbox"
                     className="promoted-input-checkbox"
-                    checked={Object.values(columnVisibility).every(
+                    checked={Object.values(columnVisibility).filter(
+                      //every//some
                       (value) => value
                     )}
                     onChange={() => {
@@ -170,19 +184,37 @@ function ApiDataViewer() {
                     ))}
                 </tr>
               </thead>
+
               <tbody>
-                {data.map((item, index) => (
-                  <tr key={index}>
-                    {Object.entries(item)
-                      .filter(([column]) => columnVisibility[column])
-                      .map(([column, value], i) => (
-                        <td key={i}>{renderTableCell(value)}</td>
-                      ))}
-                  </tr>
-                ))}
-              </tbody>
+                  {currentItems.map((item, index) => (
+                    <tr key={index}>
+                      {Object.entries(item)
+                        .filter(([column]) => columnVisibility[column])
+                        .map(([column, value], i) => (
+                          <td key={i}>{renderTableCell(value)}</td>
+                        ))}
+                    </tr>
+                  ))}
+                </tbody>
             </table>
           )}
+          <Pagination
+            itemsPerPage={itemsPerPage}
+            totalItems={data.length}
+            currentPage={currentPage}
+            onPageChange={(pageNumber) => setCurrentPage(pageNumber)}
+          />
+
+          <select
+            id="itemsPerPage"
+            value={itemsPerPage}
+            onChange={handleItemsPerPageChange}
+          >
+            <option value={10}>10</option>
+            <option value={25}>25</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+          </select>
         </div>
       </div>
     </div>
