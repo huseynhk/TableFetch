@@ -11,7 +11,7 @@ function ApiDataViewer() {
   const [columnVisibility, setColumnVisibility] = useState({});
   const [currentPage, setCurrentPage] = useState(1); // Current page
   const [itemsPerPage, setItemsPerPage] = useState(10); // Number of items per page
-
+  const [initialApiName, setInitialApiName] = useState("");
   // Calculate the indexes of the first and last items of the current page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -51,7 +51,7 @@ function ApiDataViewer() {
       setData(filteredData);
       initializeColumnVisibility(filteredData, true);
   
-      // Clear the input field
+      setInitialApiName(apiName)
       setApiName("");
     } catch (error) {
       console.error(error);
@@ -125,13 +125,13 @@ function ApiDataViewer() {
           className={`input-${theme}`}
         />
         <button onClick={fetchData} className="btn">
-          Button{" "}
+          Button
         </button>
       </div>
       <div id="rightSide">
         {data.length > 0 && (
           <>
-            <h2 className="exampleTitle">{apiName}</h2>
+            <h2 className="exampleTitle" >{initialApiName}</h2>
 
             <div id="rightTop">
               <div id="checkBoxes">
