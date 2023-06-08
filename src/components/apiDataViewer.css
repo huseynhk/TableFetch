@@ -93,61 +93,54 @@
   width: 0px;
 }
 
-.table {
-  border-collapse: collapse;
-  font-size: 105%;
-}
-  
-
-
-.table th,
-.table td {
-  border: none;
-}
-
-.table th:first-child,
-.table td:first-child {
-  border-left: none;
-}
-
-.table td:last-child {
-  border-right: none;
-}
-
-.table tr:first-child th,
-.table tr:first-child td {
-  border-top: none;
-}
-
-.table tr:last-child,
-.table tr:last-child td {
-  border-bottom: none;
-}
-
 #table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 105%;
 }
 
+#table th,
+#table td {
+  border: none;
+}
+
+#table th:first-child,
+#table td:first-child {
+  border-left: none;
+}
+
+#table td:last-child {
+  border-right: none;
+}
+
+#table tr:first-child th,
+#table tr:first-child td {
+  border-top: none;
+}
+
+#table tr:last-child,
+#table tr:last-child td {
+  border-bottom: none;
+}
+
+
+
 /* Table Styles */
-.table th,
-.table td {
+#table th,
+#table td {
   width: 10%;
   padding: .8%;
   text-align: center;
-  border-bottom: 3px solid #ccc;
-  border-left: 3px solid #ccc;
-  background-color: #fff;
-  color: #555;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+
 }
 
 /* Dark Mode Styles */
-.table-dark th,
-.table-dark td {
-  background-color: #222;
-  color: #fff;
-  border-bottom: 3px solid #555;
-  border-left: 3px solid #555;
+#table-dark th,
+#table-dark td {
+  border-bottom: 1px solid #555;
+  border-left: 1px solid #555;
 }
 
 th {

@@ -77,17 +77,18 @@ function ApiDataViewer() {
 
   return (
     <div id="mainArea">
-      <div id="leftSide">
+      <div id="leftSide" className={`navbar-${theme}`}>
         <input
           type="text"
           value={apiName}
           onChange={(e) => setApiName(e.target.value)}
           placeholder="Input"
+          className={`input ${theme === "dark" ? "input-dark" : "input-light"}`}
         />
         <button onClick={fetchData}>Fetch Data</button>
       </div>
 
-      <div id="rightSide">
+      <div id="rightSide" >
         {data.length > 0 && (
           <div id="rightTop">
             <div id="checkBoxes">
@@ -196,7 +197,7 @@ function ApiDataViewer() {
           {data.length > 0 && (
             <table
               id="table"
-              className={`table ${theme === "light" ? "table-dark" : ""}`}
+              className={`navbar-${theme}`}
             >
               <thead>
                 <tr>
@@ -254,14 +255,14 @@ function ApiDataViewer() {
           )}
         </div>
         
-{/* 
+
         <div className="dataAlert">
           {data.length === 0 && (
             <div id="noDataMessage">
               No data available. Please fetch data from an API.
             </div>
           )}
-        </div> */}
+        </div>
         
       </div>
     </div>
