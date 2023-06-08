@@ -192,7 +192,7 @@ function ApiDataViewer() {
           </div>
         )}
 
-        <div id="tableDiv" >
+        <div id="tableDiv">
           {data.length > 0 && (
             <table
               id="table"
@@ -221,39 +221,48 @@ function ApiDataViewer() {
               </tbody>
             </table>
           )}
-   
         </div>
 
-     <div>
-             
-     {data.length === 0 && (
+        <div className="rightBottom">
+          {data.length > 0 && (
+            <div>
+
+              <div className="pagination">
+                <Pagination
+                  itemsPerPage={itemsPerPage}
+                  totalItems={data.length}
+                  currentPage={currentPage}
+                  onPageChange={setCurrentPage}
+                />
+              </div>
+
+
+              <div className="selects">
+                <select
+                  id="itemsPerPage"
+                  value={itemsPerPage}
+                  onChange={handleItemsPerPageChange}
+                >
+                  <option value={10}>10</option>
+                  <option value={25}>25</option>
+                  <option value={50}>50</option>
+                  <option value={100}>100</option>
+                </select>
+              </div>
+
+            </div>
+          )}
+        </div>
+        
+{/* 
+        <div className="dataAlert">
+          {data.length === 0 && (
             <div id="noDataMessage">
               No data available. Please fetch data from an API.
             </div>
           )}
-
-          {data.length > 0 && (
-            <div>
-              <Pagination
-                itemsPerPage={itemsPerPage}
-                totalItems={data.length}
-                currentPage={currentPage}
-                onPageChange={setCurrentPage}
-              />
-              <select
-                id="itemsPerPage"
-                value={itemsPerPage}
-                onChange={handleItemsPerPageChange}
-              >
-                <option value={10}>10</option>
-                <option value={25}>25</option>
-                <option value={50}>50</option>
-                <option value={100}>100</option>
-              </select>
-            </div>
-          )}
-     </div>
-
+        </div> */}
+        
       </div>
     </div>
   );

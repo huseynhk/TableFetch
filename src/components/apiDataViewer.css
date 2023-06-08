@@ -240,33 +240,26 @@ th {
   border-radius: 5px;
 }
 
-.pagBtn {
-  padding: .3% .8%;
-  margin: 0.7% 0%;
+.pagination-button {
+  padding: .2% .9%;
+  margin: .3% .5%;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
-.pagBtn:hover {
+.pagination-button:hover {
   opacity: 0.9;
 }
 
-.currentPage {
-  margin: 0% 0.5%;
+#itemsPerPage{
+  padding: .6% .8%;
+  border-radius: 5px;
 }
 
-.pageButton{
-  padding: .3% .7%;
-  border-radius: 20%;
-  border: none;
-  margin: 0% .2%;
-  cursor: pointer;
-}
 
-.pageButton:hover{
-  opacity: .9;
-}
+
+
 
 @media screen and (max-width: 1400px) {
   #rightTop {
