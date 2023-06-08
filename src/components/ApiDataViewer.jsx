@@ -18,19 +18,56 @@ function ApiDataViewer() {
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
   const fetchData = async () => {
+    // Check if the input value is empty
+    if (apiName.trim() === "") {
+      // Show SweetAlert notification for empty value
+      Swal.fire({
+        icon: "warning",
+        title: "Empty Value",
+        text: "Please enter a value before fetching data.",
+      });
+      return; // Exit the function if the value is empty
+    }
+  
     try {
       const response = await fetch(
         `https://jsonplaceholder.typicode.com/${apiName}`
       );
+      if (!response.ok) {
+        // Show SweetAlert notification for wrong value
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Failed to fetch data. Please check your input or try again later.",
+        });
+        return; // Exit the function if the value is wrong
+      }
       const jsonData = await response.json();
-      setData(jsonData);
-      initializeColumnVisibility(jsonData, true); // Pass true to activate all checkboxes
+      const filteredData = jsonData.map(
+        ({ website, company, address, completed ,thumbnailUrl ,...rest }) => rest
+      );
+      // setData(jsonData);
+     // initializeColumnVisibility(jsonData, true); // Pass true to activate all checkboxes
+      setData(filteredData);
+      initializeColumnVisibility(filteredData, true);
+  
+      // Clear the input field
+      setApiName("");
     } catch (error) {
       console.error(error);
       setData([]);
       setColumnVisibility({});
+      setApiName("");
+  
+      // Show SweetAlert notification for failed request
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to fetch data. Please try again later.",
+      });
     }
   };
+  
 
   const initializeColumnVisibility = (jsonData, activateAll) => {
     const columns = Object.keys(jsonData[0] || {});
@@ -51,7 +88,7 @@ function ApiDataViewer() {
   //   return value;
   // };
   const renderTableCell = (value) => {
-    const maxLength = 16; // Maximum length of displayed value
+    const maxLength = 27; // Maximum length of displayed value
 
     if (typeof value === "object" && value !== null) {
       // If the value is an object, convert it to a JSON string
@@ -78,100 +115,61 @@ function ApiDataViewer() {
   return (
     <div id="mainArea">
       <div id="leftSide" className={`navbar-${theme}`}>
+        <h2>Sorgu</h2>
         <input
           type="text"
           value={apiName}
           onChange={(e) => setApiName(e.target.value)}
           placeholder="Input"
-          className={`input ${theme === "dark" ? "input-dark" : "input-light"}`}
+          id="inputStyle"
+          className={`input-${theme}`}
         />
-        <button onClick={fetchData}>Fetch Data</button>
+        <button onClick={fetchData} className="btn">
+          Button{" "}
+        </button>
       </div>
-
-      <div id="rightSide" >
+      <div id="rightSide">
         {data.length > 0 && (
-          <div id="rightTop">
-            <div id="checkBoxes">
-              <div id="checkStyle" className={`navbar-${theme}`}>
-                <div className="checkbox-wrapper-28">
-                  <input
-                    id="selectAllColumns"
-                    type="checkbox"
-                    className="promoted-input-checkbox"
-                    checked={Object.values(columnVisibility).filter(
-                      //every//some
-                      (value) => value
-                    )}
-                    onChange={() => {
-                      const allSelected = Object.values(columnVisibility).every(
-                        (value) => value
-                      );
-                      const updatedVisibility = Object.keys(
-                        columnVisibility
-                      ).reduce((acc, column, index) => {
-                        acc[column] =
-                          !allSelected || (index === 0 && allSelected); // Enable the first column if not all are selected or if all are selected
-                        return acc;
-                      }, {});
-                      setColumnVisibility(updatedVisibility);
-                    }}
-                  />
+          <>
+            <h2 className="exampleTitle">{apiName}</h2>
 
-                  <svg>
-                    <use xlinkHref="#checkmark-28" />
-                  </svg>
-                  <label
-                    htmlFor="selectAllColumns"
-                    style={{ color: theme === "light" ? "#f9e5e5" : "#c0bfbf" }}
-                  >
-                    All
-                  </label>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    style={{ display: "none" }}
-                  >
-                    <symbol id="checkmark-28" viewBox="0 0 24 24">
-                      <path
-                        strokeLinecap="round"
-                        strokeMiterlimit="10"
-                        fill="none"
-                        d="M22.9 3.7l-15.2 16.6-6.6-7.1"
-                      ></path>
-                    </symbol>
-                  </svg>
-                </div>
-              </div>
-
-              {Object.keys(columnVisibility).map((column, index) => (
-                <div key={column} id="checkStyle" className={`navbar-${theme}`}>
+            <div id="rightTop">
+              <div id="checkBoxes">
+                <div id="checkStyle" className={`navbar-${theme}`}>
                   <div className="checkbox-wrapper-28">
                     <input
-                      id={`columnVisibility.${column}`}
+                      id="selectAllColumns"
                       type="checkbox"
                       className="promoted-input-checkbox"
-                      checked={columnVisibility[column]}
-                      disabled={
-                        index === 0 &&
-                        Object.values(columnVisibility).every((value) => value)
-                      } // Disable the first checkbox only when all checkboxes are selected
-                      onChange={() =>
-                        setColumnVisibility((prevState) => ({
-                          ...prevState,
-                          [column]: !prevState[column],
-                        }))
-                      }
+                      checked={Object.values(columnVisibility).filter(
+                        //every//some
+                        (value) => value
+                      )}
+                      onChange={() => {
+                        const allSelected = Object.values(
+                          columnVisibility
+                        ).every((value) => value);
+                        const updatedVisibility = Object.keys(
+                          columnVisibility
+                        ).reduce((acc, column, index) => {
+                          acc[column] =
+                            !allSelected || (index === 0 && allSelected); // Enable the first column if not all are selected or if all are selected
+                          return acc;
+                        }, {});
+                        setColumnVisibility(updatedVisibility);
+                      }}
                     />
 
                     <svg>
                       <use xlinkHref="#checkmark-28" />
                     </svg>
                     <label
-                      htmlFor={`columnVisibility.${column}`}
+                      htmlFor="selectAllColumns"
                       style={{
                         color: theme === "light" ? "#f9e5e5" : "#c0bfbf",
                       }}
                     >
-                      {column.charAt(0).toUpperCase() + column.slice(1)}
+                      All
                     </label>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -188,17 +186,68 @@ function ApiDataViewer() {
                     </svg>
                   </div>
                 </div>
-              ))}
+
+                {Object.keys(columnVisibility).map((column, index) => (
+                  <div
+                    key={column}
+                    id="checkStyle"
+                    className={`navbar-${theme}`}
+                  >
+                    <div className="checkbox-wrapper-28">
+                      <input
+                        id={`columnVisibility.${column}`}
+                        type="checkbox"
+                        className="promoted-input-checkbox"
+                        checked={columnVisibility[column]}
+                        disabled={
+                          index === 0 &&
+                          Object.values(columnVisibility).every(
+                            (value) => value
+                          )
+                        } // Disable the first checkbox only when all checkboxes are selected
+                        onChange={() =>
+                          setColumnVisibility((prevState) => ({
+                            ...prevState,
+                            [column]: !prevState[column],
+                          }))
+                        }
+                      />
+
+                      <svg>
+                        <use xlinkHref="#checkmark-28" />
+                      </svg>
+                      <label
+                        htmlFor={`columnVisibility.${column}`}
+                        style={{
+                          color: theme === "light" ? "#f9e5e5" : "#c0bfbf",
+                        }}
+                      >
+                        {column.charAt(0).toUpperCase() + column.slice(1)}
+                      </label>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        style={{ display: "none" }}
+                      >
+                        <symbol id="checkmark-28" viewBox="0 0 24 24">
+                          <path
+                            strokeLinecap="round"
+                            strokeMiterlimit="10"
+                            fill="none"
+                            d="M22.9 3.7l-15.2 16.6-6.6-7.1"
+                          ></path>
+                        </symbol>
+                      </svg>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          </>
         )}
 
         <div id="tableDiv">
           {data.length > 0 && (
-            <table
-              id="table"
-              className={`navbar-${theme}`}
-            >
+            <table id="table" className={`navbar-${theme}`}>
               <thead>
                 <tr>
                   {Object.keys(columnVisibility)
@@ -224,46 +273,35 @@ function ApiDataViewer() {
           )}
         </div>
 
-        <div className="rightBottom">
-          {data.length > 0 && (
-            <div>
-
-              <div className="pagination">
-                <Pagination
-                  itemsPerPage={itemsPerPage}
-                  totalItems={data.length}
-                  currentPage={currentPage}
-                  onPageChange={setCurrentPage}
-                />
-              </div>
-
-
-              <div className="selects">
-                <select
-                  id="itemsPerPage"
-                  value={itemsPerPage}
-                  onChange={handleItemsPerPageChange}
-                >
-                  <option value={10}>10</option>
-                  <option value={25}>25</option>
-                  <option value={50}>50</option>
-                  <option value={100}>100</option>
-                </select>
-              </div>
-
+        {data.length > 0 && (
+          <div className="rightBottom">
+            <div className="selects">
+              <select
+                id="itemsPerPage"
+                value={itemsPerPage}
+                onChange={handleItemsPerPageChange}
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>
             </div>
-          )}
-        </div>
-        
+
+            <div className="pagination">
+              <Pagination
+                itemsPerPage={itemsPerPage}
+                totalItems={data.length}
+                currentPage={currentPage}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          </div>
+        )}
 
         <div className="dataAlert">
-          {data.length === 0 && (
-            <div id="noDataMessage">
-              No data available. Please fetch data from an API.
-            </div>
-          )}
+        <h1>{data.length === 0 && <div id="noDataMessage">No data available</div>}</h1>
         </div>
-        
       </div>
     </div>
   );

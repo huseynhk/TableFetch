@@ -85,7 +85,7 @@
   width: 100%;
   position: relative;
   border-radius: 6px;
-  max-height: 70vh;
+  max-height: 90vh;
   overflow: scroll;
 }
 
@@ -93,10 +93,10 @@
   width: 0px;
 }
 
-#table {
+#table{
   width: 100%;
   border-collapse: collapse;
-  font-size: 105%;
+  font-size: 107%;
 }
 
 #table th,
@@ -133,7 +133,6 @@
   text-align: center;
   border-bottom: 1px solid #ccc;
   border-left: 1px solid #ccc;
-
 }
 
 /* Dark Mode Styles */
@@ -143,28 +142,46 @@
   border-left: 1px solid #555;
 }
 
+.tabel-light{
+  background-color: #fff;
+  color: #333;
+}
+.tabel-dark{
+  background-color: #333;
+  color: #fff;
+}
 th {
   font-size: 120%;
   text-transform: capitalize;
 }
 
+.exampleTitle{
+  text-transform: capitalize;
+  color: #bebebe;
+  margin: .2% 0%;
+}
+
 /* input */
-.input {
-  background-color: #333;
+
+#inputStyle{
   border-radius: 6px;
   padding: 4%;
   width: 75%;
   border: none;
   font-size: 120%;
+}
+.input-light {
+  background-color: #333;
   color: #fff;
+}
+.input-dark {
+  background-color: #f0f0f0;
+  color: #bebebe;
 }
 .input::placeholder {
   color: #bebebe;
 }
-.input-dark {
-  background-color: #fff;
-  color: #333;
-}
+
 
 .btn {
   display: flex;
@@ -196,9 +213,9 @@ th {
 
 #leftSide {
   width: 12%;
-  height: 75vh;
+  height: 79.5vh;
   margin-right: 1%;
-  margin-top: 1%;
+  margin-top: .6%;
   text-align: center;
   border-radius: 5px;
 }
@@ -213,14 +230,21 @@ th {
 
 #rightSide {
   width: 85%;
-  height: 40%;
+  height: 100%;
 
 }
 
 #rightTop {
   width: 75%;
-  margin: 1% 0% 1% 0%;
+  margin: .3% 0% 1% 0%;
   font-weight: 300;
+}
+
+.rightBottom{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 #checkBoxes {
   display: flex;
@@ -234,8 +258,8 @@ th {
 }
 
 .pagination-button {
-  padding: .2% .9%;
-  margin: .3% .5%;
+  padding: 5px 10px;
+  margin: 2px; 
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -246,12 +270,9 @@ th {
 }
 
 #itemsPerPage{
-  padding: .6% .8%;
+  padding: 8px 12px;
   border-radius: 5px;
 }
-
-
-
 
 
 @media screen and (max-width: 1400px) {
