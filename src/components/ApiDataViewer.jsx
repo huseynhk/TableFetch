@@ -44,7 +44,7 @@ function ApiDataViewer() {
       }
       const jsonData = await response.json();
       const filteredData = jsonData.map(
-        ({ website, company, address, completed ,thumbnailUrl ,...rest }) => rest
+        ({thumbnailUrl , website, company, address, completed ,...rest }) => rest
       );
       // setData(jsonData);
      // initializeColumnVisibility(jsonData, true); // Pass true to activate all checkboxes
@@ -53,6 +53,7 @@ function ApiDataViewer() {
   
       setInitialApiName(apiName)
       setApiName("");
+      
     } catch (error) {
       console.error(error);
       setData([]);
@@ -78,33 +79,33 @@ function ApiDataViewer() {
     setColumnVisibility(initialVisibility);
   };
 
-  // const renderTableCell = (value) => {
-  //   const maxLength = 20; // Maximum length of displayed value
-  //   if (typeof value === "object" && value !== null) {
-  //     return JSON.stringify(value);
-  //   } else if (typeof value === "string" && value.length > maxLength) {
-  //     return value.substring(0, maxLength) + "...";
-  //   }
-  //   return value;
-  // };
   const renderTableCell = (value) => {
-    const maxLength = 27; // Maximum length of displayed value
-
+    const maxLength = 20; // Maximum length of displayed value
     if (typeof value === "object" && value !== null) {
-      // If the value is an object, convert it to a JSON string
-      const jsonString = JSON.stringify(value);
-      if (jsonString.length > maxLength) {
-        // Truncate the JSON string if it exceeds the maximum length
-        return jsonString.substring(0, maxLength) + "...";
-      }
-      return jsonString;
+      return JSON.stringify(value);
     } else if (typeof value === "string" && value.length > maxLength) {
-      // Truncate string values if they exceed the maximum length
       return value.substring(0, maxLength) + "...";
     }
-
     return value;
   };
+  // const renderTableCell = (value) => {
+  //   const maxLength = 27; // Maximum length of displayed value
+
+  //   if (typeof value === "object" && value !== null) {
+  //     // If the value is an object, convert it to a JSON string
+  //     const jsonString = JSON.stringify(value);
+  //     if (jsonString.length > maxLength) {
+  //       // Truncate the JSON string if it exceeds the maximum length
+  //       return jsonString.substring(0, maxLength) + "...";
+  //     }
+  //     return jsonString;
+  //   } else if (typeof value === "string" && value.length > maxLength) {
+  //     // Truncate string values if they exceed the maximum length
+  //     return value.substring(0, maxLength) + "...";
+  //   }
+
+  //   return value;
+  // };
 
   const handleItemsPerPageChange = (e) => {
     const newItemsPerPage = parseInt(e.target.value, 10);

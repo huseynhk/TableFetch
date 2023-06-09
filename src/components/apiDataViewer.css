@@ -323,7 +323,7 @@ th {
     width: 99%;
   }
   #leftSide {
-    height: 83.8vh;
+    height: 84vh;
   }
 
   table {
@@ -342,7 +342,7 @@ th {
     margin-left: 6%;
   }
   table {
-    font-size: 75%;
+    font-size: 70%;
   }
   .btn {
     padding: 2%;
@@ -352,23 +352,21 @@ th {
   }
 }
 
-@media only screen and (max-width: 790px) {
+@media only screen and (max-width:800px) {
   #mainArea {
     flex-direction: column;
   }
   #leftSide {
-    width: 97%;
+    width: 98%;
     height: 32vh;
     margin-top: 1.2%;
-  }
-  .input {
-    width: 70%;
-    padding: 3%;
+    margin-left: 1%;
   }
 
+
   .btn {
-    width: 76%;
-    padding: 2.8%;
+    width: 73.5%;
+    padding: 2%;
   }
   #leftSide h2 {
     margin-right: 69%;
@@ -376,11 +374,26 @@ th {
 
   #rightSide {
     width: 99%;
-    margin-left: 2%;
+    margin-left: .5%;
   }
   #rightTop {
     width: 98%;
   }
+  #table{
+    font-size:60%;
+  }
+  #inputStyle{
+    padding: 2%;
+    width: 70%;
+  }
+  #tableDiv {
+    max-height:40vh;
+  }
+  #table th,
+  #table td {
+  width: 3%;
+  padding: 1.4%;
+}
 }
 
 @media only screen and (max-width: 520px) {
@@ -405,6 +418,25 @@ th {
     padding: 0.3%;
   }
   #checkStyle {
-    padding: 0.2%;
+    padding: 0.1%;
   }
+  #table{
+    font-size: 58%;
+  }
+  #inputStyle{
+    padding: 3.1%;
+    width: 70%;
+  }
+  #tableDiv {
+    max-height:42vh;
+  }
+  #table th,
+  #table td {
+  width: 3%;
+  padding: 1.4%;
+}
+.btn {
+  width: 76%;
+  padding: 2.5%;
+}
 }
