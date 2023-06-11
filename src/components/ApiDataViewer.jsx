@@ -9,58 +9,53 @@ function ApiDataViewer() {
   const [apiName, setApiName] = useState("");
   const [data, setData] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
-  const [currentPage, setCurrentPage] = useState(1); // Current page
-  const [itemsPerPage, setItemsPerPage] = useState(10); // Number of items per page
+  const [currentPage, setCurrentPage] = useState(1); // starti set edir
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [initialApiName, setInitialApiName] = useState("");
-  // Calculate the indexes of the first and last items of the current page
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
   const fetchData = async () => {
-    // Check if the input value is empty
     if (apiName.trim() === "") {
-      // Show SweetAlert notification for empty value
       Swal.fire({
         icon: "warning",
         title: "Empty Value",
         text: "Please enter a value before fetching data.",
       });
-      return; // Exit the function if the value is empty
+      return;
     }
-  
+
     try {
       const response = await fetch(
         `https://jsonplaceholder.typicode.com/${apiName}`
       );
       if (!response.ok) {
-        // Show SweetAlert notification for wrong value
         Swal.fire({
           icon: "error",
           title: "Error",
           text: "Failed to fetch data. Please check your input or try again later.",
         });
-        return; // Exit the function if the value is wrong
+        return;
       }
       const jsonData = await response.json();
       const filteredData = jsonData.map(
-        ({thumbnailUrl , website, company, address, completed ,...rest }) => rest
+        ({ thumbnailUrl, website, company, address, completed, ...rest }) =>
+          rest
       );
       // setData(jsonData);
-     // initializeColumnVisibility(jsonData, true); // Pass true to activate all checkboxes
+      // initializeColumnVisibility(jsonData, true);
       setData(filteredData);
       initializeColumnVisibility(filteredData, true);
-  
-      setInitialApiName(apiName)
+      setInitialApiName(apiName);
       setApiName("");
-      
     } catch (error) {
       console.error(error);
       setData([]);
       setColumnVisibility({});
       setApiName("");
-  
-      // Show SweetAlert notification for failed request
+
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -68,39 +63,33 @@ function ApiDataViewer() {
       });
     }
   };
-  
 
   const initializeColumnVisibility = (jsonData, activateAll) => {
     const columns = Object.keys(jsonData[0] || {});
     const initialVisibility = columns.reduce((acc, column) => {
-      acc[column] = activateAll ? true : false; // Set all checkboxes active if activateAll is true
+      acc[column] = activateAll ? true : false; // activateAll true-dusa, bütün check qutuları aktiv olsun
       return acc;
     }, {});
     setColumnVisibility(initialVisibility);
   };
 
   const renderTableCell = (value) => {
-    const maxLength = 20; // Maximum length of displayed value
-    if (typeof value === "object" && value !== null) {
-      return JSON.stringify(value);
-    } else if (typeof value === "string" && value.length > maxLength) {
+    const maxLength = 20;
+    if (typeof value === "string" && value.length > maxLength) {
       return value.substring(0, maxLength) + "...";
     }
     return value;
   };
-  // const renderTableCell = (value) => {
-  //   const maxLength = 27; // Maximum length of displayed value
 
+  // const renderTableCell = (value) => {
+  //   const maxLength = 27;
   //   if (typeof value === "object" && value !== null) {
-  //     // If the value is an object, convert it to a JSON string
-  //     const jsonString = JSON.stringify(value);
+  //     const jsonString = JSON.stringify(value);//objectise ve null deyilse
   //     if (jsonString.length > maxLength) {
-  //       // Truncate the JSON string if it exceeds the maximum length
   //       return jsonString.substring(0, maxLength) + "...";
   //     }
   //     return jsonString;
   //   } else if (typeof value === "string" && value.length > maxLength) {
-  //     // Truncate string values if they exceed the maximum length
   //     return value.substring(0, maxLength) + "...";
   //   }
 
@@ -108,15 +97,15 @@ function ApiDataViewer() {
   // };
 
   const handleItemsPerPageChange = (e) => {
-    const newItemsPerPage = parseInt(e.target.value, 10);
-    setItemsPerPage(newItemsPerPage);
-    setCurrentPage(1); // Reset to the first page
+    const newItemsPerPage = parseInt(e.target.value, 10);//her deyisende sehifede nece eded gostersin
+    setItemsPerPage(newItemsPerPage);//select eliyrnde pagination deyisin deye
+    setCurrentPage(1); 
   };
 
   return (
     <div id="mainArea">
       <div id="leftSide" className={`navbar-${theme}`}>
-        <h2>Sorgu</h2>
+        <h2>Sorğu</h2>
         <input
           type="text"
           value={apiName}
@@ -132,7 +121,7 @@ function ApiDataViewer() {
       <div id="rightSide">
         {data.length > 0 && (
           <>
-            <h2 className="exampleTitle" >{initialApiName}</h2>
+            <h2 className="exampleTitle">{initialApiName}</h2>
 
             <div id="rightTop">
               <div id="checkBoxes">
@@ -143,18 +132,20 @@ function ApiDataViewer() {
                       type="checkbox"
                       className="promoted-input-checkbox"
                       checked={Object.values(columnVisibility).filter(
-                        //every//some
-                        (value) => value
+                                                              //every//some
+                        (value) => value                //true olanlardan teze array yaradiriq
                       )}
                       onChange={() => {
                         const allSelected = Object.values(
                           columnVisibility
-                        ).every((value) => value);
+                        ).every((value) => value);//onchange vaxti elementlerin true olmagin yoxluyur
+                        
                         const updatedVisibility = Object.keys(
                           columnVisibility
                         ).reduce((acc, column, index) => {
                           acc[column] =
-                            !allSelected || (index === 0 && allSelected); // Enable the first column if not all are selected or if all are selected
+                            !allSelected || (index === 0 && allSelected);
+                           // hamısı seçilməyibsə və ya seçilibsə birinci sütunu aktiv etmek
                           return acc;
                         }, {});
                         setColumnVisibility(updatedVisibility);
@@ -200,16 +191,16 @@ function ApiDataViewer() {
                         type="checkbox"
                         className="promoted-input-checkbox"
                         checked={columnVisibility[column]}
-                        disabled={
+                        disabled={//1-cini Disable etmek
                           index === 0 &&
                           Object.values(columnVisibility).every(
-                            (value) => value
+                            (value) => value//boxlardan her hani biri true-dusa 1 ci box disabled olsun
                           )
-                        } // Disable the first checkbox only when all checkboxes are selected
+                        } 
                         onChange={() =>
                           setColumnVisibility((prevState) => ({
                             ...prevState,
-                            [column]: !prevState[column],
+                            [column]:!prevState[column],
                           }))
                         }
                       />
@@ -301,7 +292,11 @@ function ApiDataViewer() {
         )}
 
         <div className="dataAlert">
-        <h1>{data.length === 0 && <div id="noDataMessage">No data available</div>}</h1>
+          <h1>
+            {data.length === 0 && (
+              <div id="noDataMessage">No data available</div>
+            )}
+          </h1>
         </div>
       </div>
     </div>

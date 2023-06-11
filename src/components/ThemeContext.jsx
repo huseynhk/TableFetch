@@ -10,7 +10,7 @@ const ThemeProvider = ({ children }) => {
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme); 
-    localStorage.setItem('theme', newTheme);// set oaln theme-ni newTheme-a beraber edirem
+    localStorage.setItem('theme', newTheme);// set olan theme-ni newTheme-a beraber edirem
   };
 
   useEffect(() => {

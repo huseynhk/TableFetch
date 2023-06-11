@@ -33,42 +33,25 @@ const NavBar = () => {
           />
         </svg>
 
-        <h2
-          className="titleMain"
-          style={{ color: theme === "light" ? "inherit" : "#063151" }}
-        >
-          enior.az
-        </h2>
+        <h2 className={`titleMain-${theme}`}>enior.az</h2>
       </div>
 
       <div className="buttons">
         <label className={`switch ${theme}`}>
           <input type="checkbox" onChange={() => toggleTheme(theme)} />
           <span className="slider round">
-            <div
-              className="parent"
-              style={{ backgroundColor: theme === "light" ? "#222" : "" }}
-            >
+            <div className={`parent-${theme}`}>
               <p
                 id="iconSun"
                 className={`toggle-icon ${theme === "dark" ? "active" : ""}`}
                 style={{
                   backgroundColor: theme === "light" ? "#000" : "",
-                  borderRadius: "6px",
                 }}
               >
-                <p
-                  style={{ color: theme === "light" ? "#333" : "" }}
-                  className="iconElement"
-                >
+                <p className="iconElement">
                   <FiSun />
                 </p>
-                <p
-                  className="toggleText"
-                  style={{ color: theme === "light" ? "#333" : "" }}
-                >
-                  Light
-                </p>
+                <p className={`toggleText-${theme}`}>Light</p>
               </p>
 
               <p
@@ -79,14 +62,12 @@ const NavBar = () => {
                 <p className="iconElement">
                   <HiOutlineMoon />
                 </p>
-                <p className="toggleText">Dark</p>
+                <p className={`toggleText-${theme}`}>Dark</p>
               </p>
             </div>
           </span>
         </label>
       </div>
-
-      
     </div>
   );
 };

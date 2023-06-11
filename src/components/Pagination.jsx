@@ -17,13 +17,13 @@ const Pagination = ({
   const getButtonRange = () => {
     const range = [];
 
-    // Calculate the minimum button number to display
+    // Göstərmək üçün minimum düymə sayını hesablamaq
     let minButton = currentPage - 2;
     if (minButton <= 0) {
       minButton = 1;
     }
 
-    // Calculate the maximum button number to display
+    // Göstərmək üçün maximum düymə sayını hesablamaq
     let maxButton = minButton + 4;
     if (maxButton > totalPages) {
       maxButton = totalPages;
@@ -61,7 +61,7 @@ const Pagination = ({
         </button>
       ))}
 
-      {currentPage < totalPages && (
+      {currentPage < totalPages && ( // kicikdirse last button gelsin
         <button
           onClick={() => handlePageClick(totalPages)}
           className="pagination-button"

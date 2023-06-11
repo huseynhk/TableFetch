@@ -24,9 +24,6 @@ body {
   color: #fff;
 }
 
-
-
-
 .active {
   background-color: #0d99ff;
 }
@@ -44,10 +41,8 @@ body {
 }
 
 .theme-light .toggle-icon {
-    color: #999;
+  color: #444;
 }
-
-
 
 .logo {
   height: 40px;
@@ -74,6 +69,13 @@ body {
   font-size: 190%;
   font-weight: 900;
 }
+.titleMain-light {
+  color: inherit;
+}
+
+.titleMain-dark {
+  color: #063151;
+}
 
 .check {
   margin-top: 11px;
@@ -84,7 +86,7 @@ body {
 .switch {
   position: relative;
   display: inline-block;
-  width: 100px;
+  width: 120px;
   height: 35px;
   margin-right: 65px;
   margin-bottom: 15px;
@@ -138,19 +140,29 @@ input:checked + .slider:before {
 }
 .slider.round {
   border-radius: 6px;
-  width: 160px;
+  width: 180px;
   height: 50px;
-  
 }
-.parent {
+.parent-light {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 100%;
   width: 100%;
+  background-color: #222;
+  border-radius: 6px;
 }
 
+.parent-dark {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background-color: inherit;
+  border-radius: 6px;
 
+}
 
 #iconSun {
   width: 50%;
@@ -159,6 +171,7 @@ input:checked + .slider:before {
   justify-content: center;
   align-items: center;
 }
+
 #iconMoon {
   width: 50%;
   height: 100%;
@@ -167,17 +180,28 @@ input:checked + .slider:before {
   align-items: center;
 }
 
-.iconElement{
-    font-size:25px;
-    width: 35%;
-    margin-top: 33px;
+.iconElement {
+  font-size: 26px;
+  width: 28%;
+  margin-top: 32px;
+}
+.iconElement-light {
+  color: #333;
+}
+.iconElement-dark {
+  color: inherit;
 }
 
-.toggleText {
-    font-size: 70%;
-    font-weight: 700;
-    margin-left: 3px;
-    margin-top: 13px;
-  }
+.toggleText-light {
+  font-size: 85%;
+  font-weight: 500;
+  margin-left: 5px;
+  margin-top: 14px;
+}
 
-
+.toggleText-dark {
+  font-size: 85%;
+  font-weight: 500;
+  margin-left: 5px;
+  margin-top: 14px;
+}
