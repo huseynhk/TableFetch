@@ -102,6 +102,12 @@ function ApiDataViewer() {
     setCurrentPage(1); 
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      fetchData();
+    }
+  };
+
   return (
     <div id="mainArea">
       <div id="leftSide" className={`navbar-${theme}`}>
@@ -110,6 +116,7 @@ function ApiDataViewer() {
           type="text"
           value={apiName}
           onChange={(e) => setApiName(e.target.value)}
+          onKeyPress={handleKeyPress}
           placeholder="Input"
           id="inputStyle"
           className={`input-${theme}`}
@@ -193,7 +200,7 @@ function ApiDataViewer() {
                         checked={columnVisibility[column]}
                         disabled={//1-cini Disable etmek
                           index === 0 &&
-                          Object.values(columnVisibility).every(
+                          Object.values(columnVisibility).some(
                             (value) => value//boxlardan her hani biri true-dusa 1 ci box disabled olsun
                           )
                         } 
